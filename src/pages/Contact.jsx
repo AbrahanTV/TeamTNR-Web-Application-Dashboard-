@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { render } from "@react-email/render";
-import Welcome from "../emails/Welcome";
 
 const Contact = () => {
   const [showAlert, setShowAlert] = useState(false);

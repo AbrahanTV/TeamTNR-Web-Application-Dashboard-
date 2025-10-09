@@ -1,5 +1,9 @@
-import "./App.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Home from "./pages/Home";
+import Contact from "./pages/Contact";
+import ApplyPage from "./pages/ApplyPage";
+import Layout from "./components/Layout";
 
 function App() {
   return (
@@ -7,9 +11,9 @@ function App() {
       <HashRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route index element={<Home />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="adoption-form" element={<ApplyPage />} />
           </Route>
         </Routes>
       </HashRouter>

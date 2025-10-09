@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import App from "../App";
 
-const About = () => {
+const ApplyPage = () => {
   useEffect(() => {
     const cards = document.querySelectorAll(".value-card");
     const cardObserver = new IntersectionObserver(
@@ -193,4 +194,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default ApplyPage;
