@@ -1,10 +1,18 @@
 import "./App.css";
-import Navigation from "./components/Navigation";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <Navigation />
+      <HashRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Route>
+        </Routes>
+      </HashRouter>
     </>
   );
 }
