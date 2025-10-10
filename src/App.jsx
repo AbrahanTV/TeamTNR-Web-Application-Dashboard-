@@ -13,7 +13,7 @@ function App() {
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="adoption-form" element={<ApplyPage />} />
+            <Route path="" element={<ApplyPage />} />
           </Route>
         </Routes>
       </HashRouter>
