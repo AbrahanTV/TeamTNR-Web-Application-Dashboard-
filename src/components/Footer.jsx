@@ -5,7 +5,7 @@ const Footer = () => {
     <>
       <footer
         id="footer"
-        className="d-flex justify-content-between px-5 align-items-center fs-5"
+        className="col-lg-12  col-md-12 d-flex justify-content-between align-items-center px-2  fs-5"
       >
         <a
           href="mailto:info@teamtnr.org"
