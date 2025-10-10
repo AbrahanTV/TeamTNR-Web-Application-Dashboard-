@@ -18,7 +18,7 @@ const Navigation = () => {
               width={90}
             />
           </Link>
-          <span className="fs-1 text-white ">TeamTNR Logo</span>
+          <span className="fs-1 text-white ">TeamTNR</span>
         </div>
 
         <nav className="navbar-nav">
