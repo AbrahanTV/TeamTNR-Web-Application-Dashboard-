@@ -25,7 +25,7 @@ const Home = () => {
             delay={0.1}
           >
             <div>
-              <h1 className="main-heading fs-1-5 text-white animate-slide-in-top ">
+              <h1 className="main-heading fs-1-5 text-white text-center">
                 Helping Cats in the Community
               </h1>
             </div>

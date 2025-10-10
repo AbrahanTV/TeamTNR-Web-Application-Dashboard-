@@ -9,7 +9,7 @@ const Navigation = () => {
         `}
       </style>
 
-      <header className="header h-100px d-flex justify-content-between align-items-center p-3">
+      <header className="header navbar col-lg-12 col-md-12 h-100px d-flex justify-content-between align-items-center p-3">
         <div className="header-left d-flex justify-content-center align-items-center text-center">
           <Link to="/" className="text-decoration-none">
             <img
@@ -21,7 +21,7 @@ const Navigation = () => {
           <span className="fs-1 text-white ">TeamTNR</span>
         </div>
 
-        <nav className="navbar-nav">
+        <nav className="navbar">
           <ul className="font-family fw-bold fs-3 d-flex list-unstyled gap-4 m-0 p-0">
             {/* <li>
               <Link
