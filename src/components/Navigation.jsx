@@ -9,16 +9,20 @@ const Navigation = () => {
         `}
       </style>
 
-      <header className="header navbar col-lg-12 col-md-12 h-100px d-flex justify-content-between align-items-center p-3">
-        <div className="header-left d-flex justify-content-center align-items-center text-center">
-          <Link to="/" className="text-decoration-none">
+      <header className="header navbar  navbar-expand-lg col-lg-12 col-md-12  d-flex justify-content-between align-items-center p-2 white-space-no-wrap">
+        <div className="header-left navbar-brand d-flex justify-content-center align-items-center text-center">
+          <Link
+            to="/"
+            className="text-decoration-none d-flex align-items-center"
+          >
             <img
               src={`${import.meta.env.BASE_URL}img/logo.png`}
+              className="img-fluid"
               alt="teamtnr logo"
               width={90}
             />
+            <span className="fs-1 text-white ">TeamTNR</span>
           </Link>
-          <span className="fs-1 text-white ">TeamTNR</span>
         </div>
 
         <nav className="navbar">
