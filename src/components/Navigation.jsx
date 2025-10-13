@@ -27,14 +27,14 @@ const Navigation = () => {
 
         <nav className="navbar">
           <ul className="font-family fw-bold fs-3 d-flex list-unstyled gap-4 m-0 p-0">
-            {/* <li>
+            <li>
               <Link
-                to="/adoption-form"
+                to="/application-form"
                 className="text-white text-decoration-none links-hover"
               >
                 Application Form
               </Link>
-            </li> */}
+            </li>
             <li>
               {/* <Link
                 to="/contact"

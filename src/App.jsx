@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import ApplyPage from "./pages/ApplyPage";
 import Layout from "./components/Layout";
+import ApplicationForm from "./components/ApplicatioForm";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="" element={<ApplyPage />} />
+            <Route path="/application-form" element={<ApplicationForm />} />
           </Route>
         </Routes>
       </BrowserRouter>
