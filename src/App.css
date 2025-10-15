@@ -94,7 +94,7 @@
 
 /* APPLICATION FORM */
 .form-cont {
-  height: 100vh;
+  height: 100%;
 }
 
 form {
@@ -102,12 +102,16 @@ form {
   width: fit-content;
 }
 
-form .btn {
+form #sumbitFormBtn {
   background-color: #6c4bb8;
 }
 
-form .btn:hover {
+form #sumbitFormBtn {
   background-color: #7457b6;
+}
+
+#addMemberBtn {
+  background-color: rgb(82, 106, 243);
 }
 
 .form-bg-color {

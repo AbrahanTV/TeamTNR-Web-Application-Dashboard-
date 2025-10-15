@@ -44,7 +44,7 @@ const Home = () => {
             rescuers to make that happen through adoption and care programs. */}
           </p>
           <Link
-            to="/application-form"
+            to="/application-page"
             className="contact-btn btn btn-lg text-white fs-4 mt-3"
           >
             Apply Now!

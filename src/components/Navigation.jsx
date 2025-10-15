@@ -29,7 +29,7 @@ const Navigation = () => {
           <ul className="font-family fw-bold fs-3 d-flex list-unstyled gap-4 m-0 p-0">
             <li>
               <Link
-                to="/application-form"
+                to="/application-page"
                 className="text-white text-decoration-none links-hover"
               >
                 Application Form
