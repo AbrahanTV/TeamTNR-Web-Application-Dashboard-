@@ -83,6 +83,16 @@
   background-color: #7457b6;
 }
 
+.my-btn {
+  background-color: #6c4bb8;
+  color: white;
+}
+
+.my-btn:hover {
+  background-color: #6c4bb8;
+  color: white;
+}
+
 .card {
   height: 300px;
   width: 400px;
@@ -110,7 +120,7 @@ form #sumbitFormBtn {
   background-color: #7457b6;
 }
 
-#addMemberBtn {
+#addPetBtn {
   background-color: rgb(82, 106, 243);
 }
 
