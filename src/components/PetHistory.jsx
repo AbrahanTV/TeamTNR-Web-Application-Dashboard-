@@ -193,6 +193,15 @@ const PetHistory = () => {
             </div>
           </div>
         )}
+        <div className="btn-cont mt-3 d-flex justify-content-center align-items-center">
+          <button
+            className="btn btn-md text-white fs-5 mt-3"
+            id="sumbitFormBtn"
+            type="submit"
+          >
+            Submit Application
+          </button>
+        </div>
       </div>
     </>
   );

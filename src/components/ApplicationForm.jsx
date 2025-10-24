@@ -5,9 +5,6 @@ import HouseholdInformation from "./HouseholdInformation";
 import PetHistory from "./PetHistory";
 
 const ApplicationForm = () => {
-  /* const [showAlert, setShowAlert] = useState(false);
-  const [showError, setShowError] = useState(false); */
-
   const { steps, currentStepIndex, step, isFirstStep, back, next } =
     MultiStepForm([
       <ApplicantInformation />,
@@ -15,50 +12,61 @@ const ApplicationForm = () => {
       <PetHistory />,
     ]);
 
-  const submitForm = async (e) => {
-    e.preventDefault();
+  async function handleNext() {
+    if (currentStepIndex === 0) {
+      const ok = await submitApplicantStep1();
+      if (!ok) return;
+    }
+    next();
+  }
 
-    const payload = {
-      name: document.getElementById("name").value.trim(),
-      lastName: document.getElementById("lastName").value.trim(),
-      companyName: document.getElementById("companyName").value.trim() || null,
-      email: document.getElementById("email").value.trim(),
-      message: document.getElementById("message").value.trim(),
+  async function submitApplicantStep1() {
+    const preferPhone = document.getElementById("radioPhone")?.checked;
+    const preferEmail = document.getElementById("radioEmail")?.checked;
+    const preferedMethod = preferPhone
+      ? "phone"
+      : preferEmail
+      ? "email"
+      : undefined;
+
+    const body = {
+      name: document.getElementById("name")?.value?.trim(),
+      lastName: document.getElementById("lastName")?.value?.trim(),
+      dob: document.getElementById("dob")?.value,
+      street: document.getElementById("street")?.value?.trim(),
+      city: document.getElementById("city")?.value?.trim(),
+      state: document.getElementById("state")?.value?.trim(),
+      zip: document.getElementById("zip")?.value?.trim(),
+      phoneNumber: document.getElementById("phoneNumber")?.value?.trim(),
+      email: document.getElementById("email")?.value?.trim(),
+      preferedMethod,
     };
 
-    /* const emailHtml = await render(<Welcome />); */
-
     try {
-      const url = import.meta.env.VITE_API_BASE
-        ? `${import.meta.env.VITE_API_BASE}/api/application-form`
-        : "/api/application-form";
+      const VITE_API_BASE = import.meta.env.VITE_API_BASE || "";
+      const response = await fetch(
+        `${VITE_API_BASE}/api/forms/applicant/validate-step-1`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
 
-      console.log("posting to:", url);
+      const json = await response.json();
 
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload /* emailHtml */ }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        setShowError(true);
-        setTimeout(() => setShowError(false), 3000);
-        return;
+      if (!response.ok || json.ok === false) {
+        console.error("Validation errors:", json.errors || json);
+        return false;
       }
 
-      setShowAlert(true);
-      e.target.reset();
-      setTimeout(() => {
-        setShowAlert(false);
-        window.location.href = "/";
-      }, 3000);
-    } catch (err) {
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000, err);
+      console.log("Validation successful:", json.data || json);
+      return true;
+    } catch (error) {
+      console.error("Error submitting applicant step 1:", error);
+      return false;
     }
-  };
+  }
 
   return (
     <>
@@ -71,10 +79,7 @@ const ApplicationForm = () => {
       </style>
 
       <div className="form-cont p-4 container d-flex justify-content-center align-items-center">
-        <form
-          onSubmit={submitForm}
-          className="form form-bg-color pt-2 p-4 rounded-3 col-md-8"
-        >
+        <form className="form form-bg-color pt-2 p-4 rounded-3 col-md-8">
           <div className="form-pages page-numbers d-flex justify-content-end align-items-center pb-2">
             {currentStepIndex + 1} / {steps.length}
           </div>
@@ -91,7 +96,7 @@ const ApplicationForm = () => {
             )}
             <button
               type="button"
-              onClick={next}
+              onClick={handleNext}
               className="btn btn-sm my-btn  mb-1"
             >
               Next
@@ -100,7 +105,7 @@ const ApplicationForm = () => {
 
           {step}
 
-          <div className="btn-cont mt-3 d-flex justify-content-center align-items-center">
+          {/* <div className="btn-cont mt-3 d-flex justify-content-center align-items-center">
             <button
               className="btn btn-md text-white fs-5 mt-3"
               id="sumbitFormBtn"
@@ -108,7 +113,7 @@ const ApplicationForm = () => {
             >
               Submit Application
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </>
