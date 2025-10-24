@@ -5,7 +5,7 @@ import HouseholdInformation from "./HouseholdInformation";
 import PetHistory from "./PetHistory";
 
 const ApplicationForm = () => {
-  /*   const [showAlert, setShowAlert] = useState(false);
+  /* const [showAlert, setShowAlert] = useState(false);
   const [showError, setShowError] = useState(false); */
 
   const { steps, currentStepIndex, step, isFirstStep, back, next } =
@@ -15,50 +15,50 @@ const ApplicationForm = () => {
       <PetHistory />,
     ]);
 
-  /*  const submitForm = async (e) => {
-  e.preventDefault();
+  const submitForm = async (e) => {
+    e.preventDefault();
 
-  const payload = {
-    name: document.getElementById("name").value.trim(),
-    lastName: document.getElementById("lastName").value.trim(),
-    companyName: document.getElementById("companyName").value.trim() || null,
-    email: document.getElementById("email").value.trim(),
-    message: document.getElementById("message").value.trim(),
-  };
+    const payload = {
+      name: document.getElementById("name").value.trim(),
+      lastName: document.getElementById("lastName").value.trim(),
+      companyName: document.getElementById("companyName").value.trim() || null,
+      email: document.getElementById("email").value.trim(),
+      message: document.getElementById("message").value.trim(),
+    };
 
-  const emailHtml = await render(<Welcome />);
+    /* const emailHtml = await render(<Welcome />); */
 
-  try {
-    const url = import.meta.env.VITE_API_BASE
-      ? `${import.meta.env.VITE_API_BASE}/api/contact`
-      : "/api/contact";
+    try {
+      const url = import.meta.env.VITE_API_BASE
+        ? `${import.meta.env.VITE_API_BASE}/api/application-form`
+        : "/api/application-form";
 
-    console.log("posting to:", url);
+      console.log("posting to:", url);
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...payload, emailHtml }),
-    });
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload /* emailHtml */ }),
+      });
 
-    const data = await res.json();
-    if (!res.ok || !data.ok) {
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
+
+      setShowAlert(true);
+      e.target.reset();
+      setTimeout(() => {
+        setShowAlert(false);
+        window.location.href = "/";
+      }, 3000);
+    } catch (err) {
       setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
-      return;
+      setTimeout(() => setShowError(false), 3000, err);
     }
-
-    setShowAlert(true);
-    e.target.reset();
-    setTimeout(() => {
-      setShowAlert(false);
-      window.location.href = "/";
-    }, 3000);
-  } catch (err) {
-    setShowError(true);
-    setTimeout(() => setShowError(false), 3000, err);
-  }
-}; */
+  };
 
   return (
     <>
@@ -72,7 +72,7 @@ const ApplicationForm = () => {
 
       <div className="form-cont p-4 container d-flex justify-content-center align-items-center">
         <form
-          /* onSubmit={submitForm} */
+          onSubmit={submitForm}
           className="form form-bg-color pt-2 p-4 rounded-3 col-md-8"
         >
           <div className="form-pages page-numbers d-flex justify-content-end align-items-center pb-2">

@@ -78,6 +78,7 @@ const ApplicantInformation = () => {
               <label className="form-label mt-3">State</label>
               <input
                 type="text"
+                maxLength={2}
                 className="form-control"
                 id="state"
                 placeholder="State"
