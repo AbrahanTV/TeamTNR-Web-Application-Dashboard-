@@ -1,8 +1,9 @@
-/* import { render } from "@react-email/render"; */
 import { MultiStepForm } from "./MultiStepForm";
 import ApplicantInformation from "./ApplicantInformation";
 import HouseholdInformation from "./HouseholdInformation";
 import PetHistory from "./PetHistory";
+import Lifestyle from "./Lifestyle";
+import Agreement from "./Agreement";
 
 const ApplicationForm = () => {
   const { steps, currentStepIndex, step, isFirstStep, back, next } =
@@ -10,7 +11,17 @@ const ApplicationForm = () => {
       <ApplicantInformation />,
       <HouseholdInformation />,
       <PetHistory />,
+      <Lifestyle />,
+      <Agreement />,
     ]);
+
+  const normalizeToE164 = (value) => {
+    const digits = (value || "").replace(/\D/g, "");
+    if (!digits) return "";
+    if (digits.length === 10) return `+1${digits}`;
+    if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+    return `+${digits}`;
+  };
 
   async function handleNext() {
     if (currentStepIndex === 0) {
@@ -37,7 +48,9 @@ const ApplicationForm = () => {
       city: document.getElementById("city")?.value?.trim(),
       state: document.getElementById("state")?.value?.trim(),
       zip: document.getElementById("zip")?.value?.trim(),
-      phoneNumber: document.getElementById("phoneNumber")?.value?.trim(),
+      phoneNumber: normalizeToE164(
+        document.getElementById("phoneNumber")?.value?.trim()
+      ),
       email: document.getElementById("email")?.value?.trim(),
       preferedMethod,
     };

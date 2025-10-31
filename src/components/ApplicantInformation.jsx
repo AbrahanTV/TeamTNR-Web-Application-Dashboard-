@@ -3,6 +3,19 @@ import { useRef } from "react";
 const ApplicantInformation = () => {
   const emailRef = useRef(null);
 
+  const normalizeToE164 = (value) => {
+    const digits = (value || "").replace(/\D/g, "");
+    if (!digits) return "";
+    if (digits.length === 10) return `+1${digits}`;
+    if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+    return `+${digits}`;
+  };
+
+  const handlePhoneBlur = (e) => {
+    const normalized = normalizeToE164(e.target.value);
+    if (normalized) e.target.value = normalized;
+  };
+
   return (
     <>
       <div className="applicant-info bg-sections p-4 rounded-3 ">
@@ -109,6 +122,7 @@ const ApplicantInformation = () => {
               id="phoneNumber"
               placeholder="Enter your phone number"
               required
+              onBlur={handlePhoneBlur}
             />
           </div>
           <div className="email col-md-6 ">
