@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { MultiStepForm } from "./MultiStepForm";
 import ApplicantInformation from "./ApplicantInformation";
 import HouseholdInformation from "./HouseholdInformation";
@@ -6,78 +7,88 @@ import Lifestyle from "./Lifestyle";
 import Agreement from "./Agreement";
 
 const ApplicationForm = () => {
-  const { steps, currentStepIndex, step, isFirstStep, back, next } =
+  const applicantRef = useRef();
+  const householdRef = useRef();
+  const petHistoryRef = useRef();
+  const lifestyleRef = useRef();
+  const agreementRef = useRef();
+
+  const [isFading, setIsFading] = useState(false);
+  const [step1Fail, setStep1Fail] = useState(false);
+
+  const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     MultiStepForm([
-      <ApplicantInformation />,
-      <HouseholdInformation />,
-      <PetHistory />,
-      <Lifestyle />,
-      <Agreement />,
+      <ApplicantInformation ref={applicantRef} />,
+      <HouseholdInformation ref={householdRef} />,
+      <PetHistory ref={petHistoryRef} />,
+      <Lifestyle ref={lifestyleRef} />,
+      <Agreement ref={agreementRef} />,
     ]);
 
-  const normalizeToE164 = (value) => {
-    const digits = (value || "").replace(/\D/g, "");
-    if (!digits) return "";
-    if (digits.length === 10) return `+1${digits}`;
-    if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
-    return `+${digits}`;
-  };
+  const stepRefs = [
+    applicantRef,
+    householdRef,
+    petHistoryRef,
+    lifestyleRef,
+    agreementRef,
+  ];
+  const stepEndpoints = [
+    "/api/forms/applicant/validate-step-1",
+    "/api/forms/household/validate-step-2",
+    "/api/forms/pet-history/validate-step-3",
+    "/api/forms/lifestyle/validate-step-4",
+    "/api/forms/agreement/validate-step-5",
+  ];
 
   async function handleNext() {
-    if (currentStepIndex === 0) {
-      const ok = await submitApplicantStep1();
-      if (!ok) return;
+    const currentRef = stepRefs[currentStepIndex];
+    const endpoint = stepEndpoints[currentStepIndex];
+    const VITE_API_BASE = import.meta.env.VITE_API_BASE || "";
+
+    if (!currentRef || !endpoint) {
+      next();
+      return;
     }
-    next();
-  }
 
-  async function submitApplicantStep1() {
-    const preferPhone = document.getElementById("radioPhone")?.checked;
-    const preferEmail = document.getElementById("radioEmail")?.checked;
-    const preferedMethod = preferPhone
-      ? "phone"
-      : preferEmail
-      ? "email"
-      : undefined;
+    const isFrontendValid = await currentRef.current?.validateStep?.();
+    if (!isFrontendValid) return;
 
-    const body = {
-      name: document.getElementById("name")?.value?.trim(),
-      lastName: document.getElementById("lastName")?.value?.trim(),
-      dob: document.getElementById("dob")?.value,
-      street: document.getElementById("street")?.value?.trim(),
-      city: document.getElementById("city")?.value?.trim(),
-      state: document.getElementById("state")?.value?.trim(),
-      zip: document.getElementById("zip")?.value?.trim(),
-      phoneNumber: normalizeToE164(
-        document.getElementById("phoneNumber")?.value?.trim()
-      ),
-      email: document.getElementById("email")?.value?.trim(),
-      preferedMethod,
-    };
+    const formData = currentRef.current?.getFormData?.();
+    if (!formData) return;
 
     try {
-      const VITE_API_BASE = import.meta.env.VITE_API_BASE || "";
-      const response = await fetch(
-        `${VITE_API_BASE}/api/forms/applicant/validate-step-1`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch(`${VITE_API_BASE}${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       const json = await response.json();
 
       if (!response.ok || json.ok === false) {
-        console.error("Validation errors:", json.errors || json);
-        return false;
+        console.error(
+          `Backend validation failed at step ${currentStepIndex + 1}:`,
+          json.errors || json
+        );
+        currentRef.current?.setBackendErrors?.(json.errors || {});
+        return;
       }
 
-      console.log("Validation successful:", json.data || json);
-      return true;
+      console.log(`Step ${currentStepIndex + 1} validated successfully`);
+
+      if (isLastStep) {
+        // Show thank you message on final step success
+        currentRef.current?.markSubmitted?.();
+        return;
+      }
+
+      next();
     } catch (error) {
-      console.error("Error submitting applicant step 1:", error);
-      return false;
+      console.error(`Error submitting step ${currentStepIndex + 1}:`, error);
+      setStep1Fail(true);
+      setIsFading(false);
+      setTimeout(() => setIsFading(true), 10);
+      setTimeout(() => setStep1Fail(false), 3500);
     }
   }
 
@@ -85,48 +96,61 @@ const ApplicationForm = () => {
     <>
       <style>
         {`
-        .bg-sections {
-      background-color: #ffffff81;
-    }
-  `}
+          .bg-sections {
+            background-color: #ffffff81;
+          }
+
+          .fade-out {
+            opcacity: 0;
+            transition: opacity 5s ease-out;
+          }
+        `}
       </style>
 
-      <div className="form-cont p-4 container d-flex justify-content-center align-items-center">
+      <div className="form-cont p-4 container d-flex flex-column justify-content-center align-items-center">
+        {/* Error Alert */}
+        {step1Fail && (
+          <div
+            className={`alert my-alert alert-danger mb-3 ${
+              isFading ? "fade-out" : ""
+            }`}
+          >
+            Step submission error - Please try again.
+          </div>
+        )}
         <form className="form form-bg-color pt-2 p-4 rounded-3 col-md-8">
+          {/* Step counter */}
           <div className="form-pages page-numbers d-flex justify-content-end align-items-center pb-2">
             {currentStepIndex + 1} / {steps.length}
           </div>
 
+          {/* Navigation buttons */}
           <div className="mt-1 d-flex gap-2 justify-content-end">
-            {!isFirstStep && (
-              <button
-                type="button"
-                onClick={back}
-                className="btn btn-sm my-btn mb-1"
-              >
-                Back
-              </button>
+            {/* Navigation buttons */}
+            {!(isLastStep && agreementRef.current?.isSubmitted) && (
+              <div className="mt-1 d-flex gap-2 justify-content-end">
+                {!isFirstStep && (
+                  <button
+                    type="button"
+                    onClick={back}
+                    className="btn btn-sm my-btn mb-1"
+                  >
+                    Back
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="btn btn-sm my-btn mb-1"
+                >
+                  {isLastStep ? "Submit" : "Next"}
+                </button>
+              </div>
             )}
-            <button
-              type="button"
-              onClick={handleNext}
-              className="btn btn-sm my-btn  mb-1"
-            >
-              Next
-            </button>
           </div>
 
+          {/* Render current step */}
           {step}
-
-          {/* <div className="btn-cont mt-3 d-flex justify-content-center align-items-center">
-            <button
-              className="btn btn-md text-white fs-5 mt-3"
-              id="sumbitFormBtn"
-              type="submit"
-            >
-              Submit Application
-            </button>
-          </div> */}
         </form>
       </div>
     </>

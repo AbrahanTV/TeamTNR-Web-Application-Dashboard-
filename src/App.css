@@ -26,6 +26,16 @@
   font-size: 3rem;
 }
 
+.my-alert {
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.alert-fade-out {
+  transition: opacity 1s ease-in-out;
+  opacity: 0;
+}
+
 /* HEADER */
 .header {
   /* background-color: #c8a2c8; */

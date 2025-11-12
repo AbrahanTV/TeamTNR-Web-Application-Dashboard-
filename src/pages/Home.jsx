@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Cards from "../components/Cards";
 import AnimatedContent from "../components/AnimatedContent";
 
 const Home = () => {
@@ -50,9 +49,6 @@ const Home = () => {
             Apply Now!
           </Link>
         </div>
-      </section>
-      <section className="cards-section">
-        <Cards />
       </section>
     </>
   );
