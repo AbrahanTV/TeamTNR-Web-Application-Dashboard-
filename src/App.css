@@ -144,3 +144,12 @@ footer {
   background-color: #6c4bb8;
   color: white;
 }
+
+@media screen and (max-width: 400px) {
+  .header {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
