@@ -4,13 +4,7 @@ import AnimatedContent from "../components/AnimatedContent";
 const Home = () => {
   return (
     <>
-      <style>
-        {`
-      
-      `}
-      </style>
-
-      <section className="hero d-flex justify-conent-center align-items-center">
+      <section className="hero d-flex justify-conent-center align-items-center py-2">
         <div className="container d-flex flex-column justify-content-center align-items-center">
           <AnimatedContent
             distance={150}
