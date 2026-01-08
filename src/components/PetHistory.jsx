@@ -175,8 +175,6 @@ const PetHistory = forwardRef((props, ref) => {
       const required = {
         petsOwn,
         previousPets,
-        vetName,
-        vetPhone,
         contactVet,
         ageGroup: noPreference ? "ok" : ageGroup,
         genderGroup: noPreference ? "ok" : genderGroup,
