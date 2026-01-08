@@ -16,6 +16,8 @@ const ApplicationForm = () => {
   const [isFading, setIsFading] = useState(false);
   const [step1Fail, setStep1Fail] = useState(false);
 
+  const [applicationId, setApplicationId] = useState(null);
+
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     MultiStepForm([
       <ApplicantInformation ref={applicantRef} />,
@@ -32,12 +34,21 @@ const ApplicationForm = () => {
     lifestyleRef,
     agreementRef,
   ];
+
   const stepEndpoints = [
     "/api/forms/applicant/validate-step-1",
     "/api/forms/household/validate-step-2",
     "/api/forms/pet-history/validate-step-3",
     "/api/forms/lifestyle/validate-step-4",
     "/api/forms/agreement/validate-step-5",
+  ];
+
+  const submitEndpoints = [
+    "/api/forms/applicant/submit-step-1",
+    "/api/forms/household/submit-step-2",
+    "/api/forms/pet-history/submit-step-3",
+    "/api/forms/lifestyle/submit-step-4",
+    "/api/forms/agreement/submit-step-5",
   ];
 
   async function handleNext() {
@@ -72,6 +83,23 @@ const ApplicationForm = () => {
         );
         currentRef.current?.setBackendErrors?.(json.errors || {});
         return;
+      }
+
+      if (currentStepIndex === 0) {
+        const submitRes = await fetch(`${VITE_API_BASE}${submitEndpoints[0]}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        const submitJson = await submitRes.json();
+
+        if (!submitRes.ok || submitJson.ok === false) {
+          currentRef.current?.setBackendErrors?.(submitJson.errors || {});
+          return;
+        }
+
+        setApplicationId(submitJson.application_id);
       }
 
       console.log(`Step ${currentStepIndex + 1} validated successfully`);
