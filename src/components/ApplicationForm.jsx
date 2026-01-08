@@ -101,7 +101,7 @@ const ApplicationForm = () => {
           }
 
           .fade-out {
-            opcacity: 0;
+            opacity: 0;
             transition: opacity 5s ease-out;
           }
         `}
