@@ -3,8 +3,9 @@ import "./App.css";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Layout from "./components/Layout";
-import ApplicationForm from "./components/ApplicationForm";
 import ApplicationPage from "./pages/ApplicationPage";
+import AdminPanel from "./pages/AdminPanel";
+import ApplicantsTable from "./pages/ApplicantsTable";
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="/application-page" element={<ApplicationPage />} />
           </Route>
+
+          {/* ADMIN ROUTE */}
+          <Route path="/admin-panel" element={<AdminPanel />} />
+          <Route path="/applicants" element={<ApplicantsTable />} />
         </Routes>
       </BrowserRouter>
     </>
