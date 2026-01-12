@@ -1,10 +1,10 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { useFormValidation } from "../hooks/useFormValidation";
-import { useNavigate } from "react-router-dom"; // ✅ import this
+import { useNavigate } from "react-router-dom";
 
 const Agreement = forwardRef((props, ref) => {
   const { errors, validate, setErrors } = useFormValidation();
-  const navigate = useNavigate(); // ✅ create navigate function
+  const navigate = useNavigate();
 
   const [agree, setAgree] = useState(false);
   const [signature, setSignature] = useState("");
@@ -44,8 +44,8 @@ const Agreement = forwardRef((props, ref) => {
         </p>
 
         <button
-          className="btn btn-primary mt-4 px-4 py-2"
-          onClick={() => navigate("/")} // go to home route
+          className="btn contact-btn mt-4 px-4 py-2"
+          onClick={() => navigate("/")}
         >
           Go Home
         </button>

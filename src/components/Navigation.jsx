@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 const Navigation = () => {
   return (
     <>
-      <style>
-        {`
-       
-        `}
-      </style>
-
       <header className="header navbar navbar-expand-lg col-lg-12 col-md-12 d-flex justify-content-between align-items-center p-2 white-space-no-wrap">
         <div className="header-left navbar-brand d-flex justify-content-center align-items-center text-center">
           <Link

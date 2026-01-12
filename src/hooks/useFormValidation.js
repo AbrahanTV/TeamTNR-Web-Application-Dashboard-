@@ -18,7 +18,7 @@ export function useFormValidation() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // ✅ return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   return { errors, setErrors, validate };
