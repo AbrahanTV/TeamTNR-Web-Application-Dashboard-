@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
-const AdminPanel = () => {
+const AdminLayout = () => {
   return (
     <>
       <style>
@@ -39,15 +39,16 @@ const AdminPanel = () => {
         <aside className="sidebar">
           <h1 className="text-center">Admin Panel</h1>
           <Link to="/">Go Home</Link>
-          <Link to="/applicants">Applicants</Link>
+          <Link to="applicants">Applicants</Link>
+          <Link to="household">Household</Link>
         </aside>
 
         <main className="content">
-          <h2>Welcome Admin</h2>
+          <Outlet />
         </main>
       </div>
     </>
   );
 };
 
-export default AdminPanel;
+export default AdminLayout;

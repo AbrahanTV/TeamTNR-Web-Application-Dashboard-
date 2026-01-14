@@ -1,16 +1,15 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchApplicants, deleteApplicant } from "/api/applicants";
+import { fetchHouseholds, deleteHouseholds } from "/api/households";
 
-const ApplicantsTable = () => {
-  const [applicants, setApplicants] = useState([]);
+const HouseholdTable = () => {
+  const [household, setHousehold] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchApplicants()
+    fetchHouseholds()
       .then((data) => {
-        setApplicants(data);
+        setHousehold(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -28,16 +27,15 @@ const ApplicantsTable = () => {
     }
 
     try {
-      await deleteApplicant(id);
-      setApplicants((prev) => prev.filter((applicant) => applicant.id !== id));
+      await deleteHouseholds(id);
+      setHousehold((prev) => prev.filter((household) => household.id !== id));
     } catch (err) {
-      alert("Failed to delete applicant");
+      alert("Failed to delete household member");
     }
   };
 
   return (
     <>
-      <Link to="/admin-panel">Go Back</Link>
       <h1>Applicants</h1>
       <table className="table table-responsive table-striped table-bordered">
         <thead>
@@ -57,23 +55,14 @@ const ApplicantsTable = () => {
           </tr>
         </thead>
         <tbody>
-          {applicants.map((applicant, index) => (
-            <tr key={applicant.id}>
+          {household.map((householdMember, index) => (
+            <tr key={householdMember.id}>
               <td>{index + 1}</td>
-              <td>{applicant.firstName}</td>
-              <td>{applicant.lastName}</td>
-              <td>{applicant.dob}</td>
-              <td>{applicant.street}</td>
-              <td>{applicant.city}</td>
-              <td>{applicant.state}</td>
-              <td>{applicant.zipCode}</td>
-              <td>{applicant.phoneNumber}</td>
-              <td>{applicant.preferredContact}</td>
-              <td>{applicant.dateOfSubmission}</td>
+              <td>household</td>
               <td>
                 <button
                   className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(applicant.id)}
+                  onClick={() => handleDelete(householdMember.id)}
                 >
                   Delete
                 </button>
@@ -86,4 +75,4 @@ const ApplicantsTable = () => {
   );
 };
 
-export default ApplicantsTable;
+export default HouseholdTable;

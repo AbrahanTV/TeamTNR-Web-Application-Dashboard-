@@ -76,7 +76,7 @@ const ApplicationForm = () => {
 
       const json = await response.json();
 
-      if (!response.ok || json.ok === false) {
+      if (!response.ok || !json.ok) {
         console.error(
           `Backend validation failed at step ${currentStepIndex + 1}:`,
           json.errors || json
@@ -85,24 +85,30 @@ const ApplicationForm = () => {
         return;
       }
 
-      if (currentStepIndex === 0) {
-        const submitRes = await fetch(`${VITE_API_BASE}${submitEndpoints[0]}`, {
+      /* if (currentStepIndex === 0) */
+
+      const submitRes = await fetch(
+        `${VITE_API_BASE}${submitEndpoints[currentStepIndex]}`,
+        {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
-        });
-
-        const submitJson = await submitRes.json();
-
-        if (!submitRes.ok || submitJson.ok === false) {
-          currentRef.current?.setBackendErrors?.(submitJson.errors || {});
-          return;
         }
+      );
 
-        setApplicationId(submitJson.application_id);
+      const submitJson = await submitRes.json();
+
+      if (!submitRes.ok || !submitJson.ok) {
+        console.log(
+          `fucked up ${VITE_API_BASE}${submitEndpoints[currentStepIndex]}`
+        );
+        currentRef.current?.setBackendErrors?.(submitJson.errors || {});
+        return;
       }
 
-      console.log(`Step ${currentStepIndex + 1} validated successfully`);
+      setApplicationId(submitJson.application_id);
+
+      console.log(`Step ${currentStepIndex + 1} submitted successfully`);
 
       if (isLastStep) {
         // Show thank you message on final step success
