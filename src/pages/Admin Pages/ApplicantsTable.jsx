@@ -79,7 +79,7 @@ const ApplicantsTable = () => {
               <td>{applicant.preferredContact}</td>
               <td>{applicant.dateOfSubmission}</td>
               <td>
-                <a href={`/admin/households`}>View</a>
+                <a href={`/admin/applicants/${applicant.id}`}>View</a>
               </td>
               <td>
                 <button

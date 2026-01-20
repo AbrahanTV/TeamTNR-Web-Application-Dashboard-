@@ -116,7 +116,7 @@ const CurrentPets = memo(function CurrentPets({
 });
 
 // ----- MAIN COMPONENT -----
-const PetHistory = forwardRef((props, ref) => {
+const PetHistory = forwardRef(({ householdId }, ref) => {
   const { errors, validate, setErrors } = useFormValidation();
   const nextPetIdRef = useRef(2);
 
@@ -149,7 +149,7 @@ const PetHistory = forwardRef((props, ref) => {
 
   const handlePetChange = useCallback((id, partial) => {
     setPets((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...partial } : p))
+      prev.map((p) => (p.id === id ? { ...p, ...partial } : p)),
     );
 
     const changedField = Object.keys(partial)[0];
@@ -158,7 +158,7 @@ const PetHistory = forwardRef((props, ref) => {
 
   const handleRemovePet = useCallback(
     (id) => setPets((prev) => prev.filter((p) => p.id !== id)),
-    []
+    [],
   );
 
   const addPet = useCallback(() => {
@@ -213,6 +213,7 @@ const PetHistory = forwardRef((props, ref) => {
       const filteredPets = petsOwn === "yes" ? pets : [];
 
       return {
+        householdId: householdId?.current,
         petsOwn,
         pets: filteredPets,
         previousPets,

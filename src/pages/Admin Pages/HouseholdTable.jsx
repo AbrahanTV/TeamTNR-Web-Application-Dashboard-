@@ -83,7 +83,7 @@ const HouseholdTable = () => {
               <td>{household.rentOwn}</td>
               <td>{household.residenceType}</td>
               <td>
-                <a href={`/admin/residents`}>View</a>
+                <a href={`/admin/applicants/${household.applicantId}`}>View</a>
               </td>
               <td>
                 <button

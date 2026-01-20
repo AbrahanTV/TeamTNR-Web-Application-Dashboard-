@@ -19,6 +19,9 @@ const ApplicationForm = () => {
   const [applicationId, setApplicationId] = useState(null);
   const applicationIdRef = useRef(applicationId);
 
+  const [householdId, setHouseholdId] = useState(null);
+  const householdIdRef = useRef(householdId);
+
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     MultiStepForm([
       <ApplicantInformation ref={applicantRef} />,
@@ -26,7 +29,7 @@ const ApplicationForm = () => {
         ref={householdRef}
         applicationId={applicationIdRef}
       />,
-      <PetHistory ref={petHistoryRef} />,
+      <PetHistory ref={petHistoryRef} householdId={householdIdRef} />,
       <Lifestyle ref={lifestyleRef} />,
       <Agreement ref={agreementRef} />,
     ]);
@@ -112,6 +115,8 @@ const ApplicationForm = () => {
         }
 
         const householdId = submitJson.household_id;
+        setHouseholdId(householdId);
+        householdIdRef.current = householdId;
 
         // 2️⃣ Submit household members
         const membersRes = await fetch(
