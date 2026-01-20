@@ -36,6 +36,12 @@
   opacity: 0;
 }
 
+.page-item.active .page-link {
+  background-color: #6f42c1; /* your purple */
+  border-color: #6f42c1;
+  color: white;
+}
+
 /* HEADER */
 .header {
   /* background-color: #c8a2c8; */

@@ -17,11 +17,15 @@ const ApplicationForm = () => {
   const [step1Fail, setStep1Fail] = useState(false);
 
   const [applicationId, setApplicationId] = useState(null);
+  const applicationIdRef = useRef(applicationId);
 
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     MultiStepForm([
       <ApplicantInformation ref={applicantRef} />,
-      <HouseholdInformation ref={householdRef} />,
+      <HouseholdInformation
+        ref={householdRef}
+        applicationId={applicationIdRef}
+      />,
       <PetHistory ref={petHistoryRef} />,
       <Lifestyle ref={lifestyleRef} />,
       <Agreement ref={agreementRef} />,
@@ -79,33 +83,75 @@ const ApplicationForm = () => {
       if (!response.ok || !json.ok) {
         console.error(
           `Backend validation failed at step ${currentStepIndex + 1}:`,
-          json.errors || json
+          json.errors || json,
         );
         currentRef.current?.setBackendErrors?.(json.errors || {});
         return;
       }
 
-      /* if (currentStepIndex === 0) */
+      let submitJson;
 
-      const submitRes = await fetch(
-        `${VITE_API_BASE}${submitEndpoints[currentStepIndex]}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      if (currentStepIndex === 1) {
+        // STEP 2: Household + Members
 
-      const submitJson = await submitRes.json();
-
-      if (!submitRes.ok || !submitJson.ok) {
-        console.log(
-          `fucked up ${VITE_API_BASE}${submitEndpoints[currentStepIndex]}`
+        // 1️⃣ Submit household FIRST
+        const householdRes = await fetch(
+          `${VITE_API_BASE}/api/forms/household/submit-step-2`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          },
         );
-        currentRef.current?.setBackendErrors?.(submitJson.errors || {});
-        return;
+
+        submitJson = await householdRes.json();
+
+        if (!householdRes.ok || !submitJson.ok) {
+          currentRef.current?.setBackendErrors?.(submitJson.error || {});
+          return;
+        }
+
+        const householdId = submitJson.household_id;
+
+        // 2️⃣ Submit household members
+        const membersRes = await fetch(
+          `${VITE_API_BASE}/api/forms/household-members/submit`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              householdId,
+              members: formData.members,
+            }),
+          },
+        );
+
+        const membersJson = await membersRes.json();
+
+        if (!membersRes.ok || !membersJson.ok) {
+          console.error("Failed to submit household members");
+          return;
+        }
+      } else {
+        // ALL OTHER STEPS (1, 3, 4, 5)
+        const submitRes = await fetch(
+          `${VITE_API_BASE}${submitEndpoints[currentStepIndex]}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          },
+        );
+
+        submitJson = await submitRes.json();
+
+        if (!submitRes.ok || !submitJson.ok) {
+          currentRef.current?.setBackendErrors?.(submitJson.errors || {});
+          return;
+        }
       }
 
+      applicationIdRef.current = submitJson.application_id;
       setApplicationId(submitJson.application_id);
 
       console.log(`Step ${currentStepIndex + 1} submitted successfully`);

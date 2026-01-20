@@ -9,6 +9,8 @@ import AdminLayout from "./pages/Admin Pages/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import ApplicantsTable from "./pages/Admin Pages/ApplicantsTable";
 import HouseholdTable from "./pages/Admin Pages/HouseholdTable";
+import ResidentsTable from "./pages/Admin Pages/ResidentsTable";
+import PetsTable from "./pages/Admin Pages/PetsTable";
 
 function App() {
   return (
@@ -26,7 +28,9 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="applicants" element={<ApplicantsTable />} />
-            <Route path="household" element={<HouseholdTable />} />
+            <Route path="households" element={<HouseholdTable />} />
+            <Route path="residents" element={<ResidentsTable />} />
+            <Route path="pets" element={<PetsTable />} />
           </Route>
         </Routes>
       </BrowserRouter>

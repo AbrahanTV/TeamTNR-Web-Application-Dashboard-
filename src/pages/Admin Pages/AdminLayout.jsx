@@ -32,15 +32,31 @@ const AdminLayout = () => {
             flex: 1;
             padding: 2rem;
           }
+
+          .w-fit {
+            width: fit-content;
+          }
         `}
       </style>
 
       <div className="layout">
         <aside className="sidebar">
           <h1 className="text-center">Admin Panel</h1>
-          <Link to="/">Go Home</Link>
-          <Link to="applicants">Applicants</Link>
-          <Link to="household">Household</Link>
+          <Link to="/" className="w-fit">
+            Go Home
+          </Link>
+          <Link to="applicants" className="w-fit">
+            Applicants
+          </Link>
+          <Link to="households" className="w-fit">
+            Households
+          </Link>
+          <Link to="residents" className="w-fit">
+            Residents
+          </Link>
+          <Link to="pets" className="w-fit">
+            Pets
+          </Link>
         </aside>
 
         <main className="content">
