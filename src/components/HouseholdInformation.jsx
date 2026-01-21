@@ -46,7 +46,7 @@ const HouseholdMember = memo(function HouseholdMember({
         min={0}
         placeholder="Age"
         value={member.age}
-        onChange={(e) => onChange(member.id, { age: e.target.value })}
+        onChange={(e) => onChange(member.id, { age: Number(e.target.value) })}
       />
       {errors[`member-${member.id}-age`] && (
         <div className="invalid-feedback d-block">
@@ -59,9 +59,9 @@ const HouseholdMember = memo(function HouseholdMember({
           errors[`member-${member.id}-relation`] ? "is-invalid" : ""
         }`}
         value={member.relation}
-        onChange={(e) => onChange(member.id, { relation: e.target.value })}
+        onChange={(e) => onChange(member.id, { relationship: e.target.value })}
       >
-        <option value="">Relation</option>
+        <option value="">Relationship</option>
         <option value="mother">Mother</option>
         <option value="father">Father</option>
         <option value="child">Child</option>
@@ -119,7 +119,7 @@ const HouseholdMember = memo(function HouseholdMember({
   );
 });
 
-const HouseholdInformation = forwardRef((props, ref) => {
+const HouseholdInformation = forwardRef(({ applicationId }, ref) => {
   const { errors, validate, setErrors } = useFormValidation();
   const [rentOwn, setRentOwn] = useState("");
   const [form, setForm] = useState({
@@ -131,13 +131,20 @@ const HouseholdInformation = forwardRef((props, ref) => {
     months: "",
   });
   const [members, setMembers] = useState([
-    { id: 1, name: "", age: "", relation: "", allergies: "", removable: false },
+    {
+      id: 1,
+      name: "",
+      age: "",
+      relationship: "",
+      allergies: "",
+      removable: false,
+    },
   ]);
   const nextMemberIdRef = useRef(2);
 
   const handleMemberChange = useCallback((id, partial) => {
     setMembers((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, ...partial } : m))
+      prev.map((m) => (m.id === id ? { ...m, ...partial } : m)),
     );
 
     // Remove only the changed field’s error
@@ -159,7 +166,14 @@ const HouseholdInformation = forwardRef((props, ref) => {
     const id = nextMemberIdRef.current++;
     setMembers((prev) => [
       ...prev,
-      { id, name: "", age: "", relation: "", allergies: "", removable: true },
+      {
+        id,
+        name: "",
+        age: "",
+        relationship: "",
+        allergies: "",
+        removable: true,
+      },
     ]);
   }, []);
 
@@ -189,7 +203,7 @@ const HouseholdInformation = forwardRef((props, ref) => {
           memberErrors[`member-${m.id}-name`] = "Member name is required.";
         if (!m.age)
           memberErrors[`member-${m.id}-age`] = "Member age is required.";
-        if (!m.relation)
+        if (!m.relationship)
           memberErrors[`member-${m.id}-relation`] = "Select relation.";
         if (!m.allergies)
           memberErrors[`member-${m.id}-allergies`] =
@@ -202,13 +216,14 @@ const HouseholdInformation = forwardRef((props, ref) => {
     },
 
     getFormData: () => ({
+      applicantId: applicationId.current,
       rentOwn,
       landlordName: form.landlordName,
       landlordPhone: form.landlordPhone,
       landlordEmail: form.landlordEmail,
       residenceType: form.residenceType,
-      petsAllowed: form.petsAllowed,
-      monthsLiving: parseInt(form.months) || 0,
+      petsAllowed: form.petsAllowed === "true",
+      monthsAtAddress: parseInt(form.months) || 0,
       members: members.map(({ removable, ...rest }) => rest),
     }),
 

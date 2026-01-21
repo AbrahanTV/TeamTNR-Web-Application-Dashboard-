@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
-const AdminPanel = () => {
+const AdminLayout = () => {
   return (
     <>
       <style>
@@ -32,22 +32,39 @@ const AdminPanel = () => {
             flex: 1;
             padding: 2rem;
           }
+
+          .w-fit {
+            width: fit-content;
+          }
         `}
       </style>
 
       <div className="layout">
         <aside className="sidebar">
           <h1 className="text-center">Admin Panel</h1>
-          <Link to="/">Go Home</Link>
-          <Link to="/applicants">Applicants</Link>
+          <Link to="/" className="w-fit">
+            Go Home
+          </Link>
+          <Link to="applicants" className="w-fit">
+            Applicants
+          </Link>
+          <Link to="households" className="w-fit">
+            Households
+          </Link>
+          <Link to="residents" className="w-fit">
+            Residents
+          </Link>
+          <Link to="pets" className="w-fit">
+            Pets
+          </Link>
         </aside>
 
         <main className="content">
-          <h2>Welcome Admin</h2>
+          <Outlet />
         </main>
       </div>
     </>
   );
 };
 
-export default AdminPanel;
+export default AdminLayout;

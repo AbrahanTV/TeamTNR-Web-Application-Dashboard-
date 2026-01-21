@@ -1,11 +1,19 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchApplicants, deleteApplicant } from "/api/applicants";
+import Pagination from "/src/components/Pagination.jsx";
 
 const ApplicantsTable = () => {
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = applicants.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(applicants.length / itemsPerPage);
 
   useEffect(() => {
     fetchApplicants()
@@ -37,7 +45,6 @@ const ApplicantsTable = () => {
 
   return (
     <>
-      <Link to="/admin-panel">Go Back</Link>
       <h1>Applicants</h1>
       <table className="table table-responsive table-striped table-bordered">
         <thead>
@@ -53,13 +60,14 @@ const ApplicantsTable = () => {
             <th>Phone Number</th>
             <th>Preferred Contact</th>
             <th>Date of Submission</th>
+            <th>View</th>
             <th>Details</th>
           </tr>
         </thead>
         <tbody>
-          {applicants.map((applicant, index) => (
+          {currentItems.map((applicant) => (
             <tr key={applicant.id}>
-              <td>{index + 1}</td>
+              <td>{applicant.id}</td>
               <td>{applicant.firstName}</td>
               <td>{applicant.lastName}</td>
               <td>{applicant.dob}</td>
@@ -70,6 +78,9 @@ const ApplicantsTable = () => {
               <td>{applicant.phoneNumber}</td>
               <td>{applicant.preferredContact}</td>
               <td>{applicant.dateOfSubmission}</td>
+              <td>
+                <a href={`/admin/applicants/${applicant.id}`}>View</a>
+              </td>
               <td>
                 <button
                   className="btn btn-danger btn-sm"
@@ -82,6 +93,11 @@ const ApplicantsTable = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </>
   );
 };
