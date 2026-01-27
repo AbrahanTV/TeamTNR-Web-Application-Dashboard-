@@ -58,6 +58,7 @@ const ApplicantsTable = () => {
             <th>State</th>
             <th>Zip Code</th>
             <th>Phone Number</th>
+            <th>Email</th>
             <th>Preferred Contact</th>
             <th>Date of Submission</th>
             <th>View</th>
@@ -76,6 +77,7 @@ const ApplicantsTable = () => {
               <td>{applicant.state}</td>
               <td>{applicant.zipCode}</td>
               <td>{applicant.phoneNumber}</td>
+              <td>{applicant.email}</td>
               <td>{applicant.preferredContact}</td>
               <td>{applicant.dateOfSubmission}</td>
               <td>

@@ -61,7 +61,7 @@ const ResidentsTable = () => {
           {currentItems.map((resident) => (
             <tr key={resident.id}>
               <td>{resident.id}</td>
-              <td>{resident.householId}</td>
+              <td>{resident.householdId}</td>
               <td>{resident.memberName}</td>
               <td>{resident.age}</td>
               <td>{resident.relationship}</td>
