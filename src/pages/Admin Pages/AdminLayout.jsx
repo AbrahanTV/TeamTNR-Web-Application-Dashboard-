@@ -79,7 +79,7 @@ const AdminLayout = () => {
 
       <div className="layout">
         <aside className="sidebar" ref={sidebarRef}>
-          <button className="toggle-btn" onClick={toggleSidebar}>
+          <button className="toggle-btn bg-secondary" onClick={toggleSidebar}>
             {isSidebarHidden ? "Show Menu" : "Hide Menu"}
           </button>
           <h1 className="text-center">Admin Panel</h1>

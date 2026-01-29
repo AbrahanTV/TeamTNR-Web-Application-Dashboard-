@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 
       {/* Stats Grid */}
       <div className="stats-grid">
-        <Link to="/admin/applicants">
+        <Link to="/admin/applicants" className="text-decoration-none">
           <div className="stat-card applicants">
             <div className="stat-icon">👥</div>
             <div className="stat-content">
@@ -104,7 +104,10 @@ const AdminDashboard = () => {
           <div className="applications-list">
             {recentApplicants.length > 0 ? (
               recentApplicants.map((app, index) => (
-                <Link to={`/admin/applicants/${app.id}`}>
+                <Link
+                  to={`/admin/applicants/${app.id}`}
+                  className="text-decoration-none"
+                >
                   <div key={index} className="application-item">
                     <div className="app-avatar">
                       {app.firstName.charAt(0)}

@@ -66,7 +66,7 @@ const ApplicantDetail = () => {
           <h1>
             {applicant?.firstName} {applicant?.lastName}
           </h1>
-          <p>Application ID: {applicant?.id}</p>
+          <p>Applicant ID: {applicant?.id}</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ const ApplicantDetail = () => {
                   </p>
                 </div>
                 <div className="detail-field">
-                  <label>Application ID</label>
+                  <label>Applicant ID</label>
                   <p>{applicant.id}</p>
                 </div>
               </div>

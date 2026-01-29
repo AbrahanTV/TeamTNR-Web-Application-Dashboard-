@@ -59,8 +59,8 @@ const ApplicantsTable = () => {
   };
 
   return (
-    <div className="applicants-container">
-      <div className="applicants-header">
+    <div className="table-container">
+      <div className="table-header">
         <button onClick={() => navigate("/admin")} className="back-btn-small">
           ← Back
         </button>
@@ -68,18 +68,22 @@ const ApplicantsTable = () => {
         <p>Manage and review all application submissions.</p>
       </div>
 
-      <div className="applicants-card">
+      <div className="table-card">
         {applicants.length > 0 ? (
           <>
             <div className="table-wrapper">
-              <table className="applicants-table">
+              <table className="my-table overflow-hidden">
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Date of Birth</th>
                     <th>Email</th>
                     <th>Phone</th>
+                    <th>Street</th>
                     <th>City</th>
                     <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Preferred Contact</th>
                     <th>Submission Date</th>
                     <th>Actions</th>
                   </tr>
@@ -88,7 +92,7 @@ const ApplicantsTable = () => {
                   {currentItems.map((applicant) => (
                     <tr key={applicant.id}>
                       <td>
-                        <div className="applicant-name">
+                        <div className="table-name">
                           <div className="avatar">
                             {applicant.firstName.charAt(0)}
                             {applicant.lastName.charAt(0)}
@@ -97,14 +101,20 @@ const ApplicantsTable = () => {
                             <p className="name-text">
                               {applicant.firstName} {applicant.lastName}
                             </p>
-                            <p className="id-text">ID: {applicant.id}</p>
+                            <p className="id-text text-black">
+                              ID: {applicant.id}
+                            </p>
                           </div>
                         </div>
                       </td>
+                      <td>{applicant.dob || "N/A"}</td>
                       <td>{applicant.email || "N/A"}</td>
                       <td>{applicant.phoneNumber || "N/A"}</td>
+                      <td>{applicant.street || "N/A"}</td>
                       <td>{applicant.city || "N/A"}</td>
                       <td>{applicant.state || "N/A"}</td>
+                      <td>{applicant.zipCode || "N/A"}</td>
+                      <td>{applicant.preferredContact || "N/A"}</td>
                       <td>{applicant.dateOfSubmission || "N/A"}</td>
                       <td>
                         <div className="action-buttons">
