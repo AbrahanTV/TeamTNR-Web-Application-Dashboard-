@@ -13,6 +13,7 @@ const AdminDashboard = () => {
     residents: 0,
     pets: 0,
   });
+
   const [loading, setLoading] = useState(true);
   const [recentApplicants, setRecentApplicants] = useState([]);
 
@@ -57,13 +58,15 @@ const AdminDashboard = () => {
 
       {/* Stats Grid */}
       <div className="stats-grid">
-        <div className="stat-card applicants">
-          <div className="stat-icon">👥</div>
-          <div className="stat-content">
-            <h3>{stats.applicants}</h3>
-            <p>Total Applicants</p>
+        <Link to="/admin/applicants">
+          <div className="stat-card applicants">
+            <div className="stat-icon">👥</div>
+            <div className="stat-content">
+              <h3>{stats.applicants}</h3>
+              <p>Total Applicants</p>
+            </div>
           </div>
-        </div>
+        </Link>
 
         <div className="stat-card households">
           <div className="stat-icon">🏠</div>

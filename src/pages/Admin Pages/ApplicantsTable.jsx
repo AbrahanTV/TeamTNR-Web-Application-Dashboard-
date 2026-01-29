@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchApplicants, deleteApplicant } from "/api/applicants";
+import { Link, useNavigate } from "react-router-dom";
 import Pagination from "/src/components/Pagination.jsx";
+import "/src/styles/applicants-table.css";
 
 const ApplicantsTable = () => {
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -27,8 +31,19 @@ const ApplicantsTable = () => {
       });
   }, []);
 
-  if (loading) return <p>Loading applicants...</p>;
-  if (error) return <p className="text-danger">{error}</p>;
+  if (loading)
+    return (
+      <div className="table-loading">
+        <div className="spinner"></div>
+        <p>Loading applicants...</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="table-error">
+        <p>{error}</p>
+      </div>
+    );
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this applicant?")) {
@@ -44,63 +59,89 @@ const ApplicantsTable = () => {
   };
 
   return (
-    <>
-      <h1>Applicants</h1>
-      <table className="table table-responsive table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Date of Birth</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip Code</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>Preferred Contact</th>
-            <th>Date of Submission</th>
-            <th>View</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((applicant) => (
-            <tr key={applicant.id}>
-              <td>{applicant.id}</td>
-              <td>{applicant.firstName}</td>
-              <td>{applicant.lastName}</td>
-              <td>{applicant.dob}</td>
-              <td>{applicant.street}</td>
-              <td>{applicant.city}</td>
-              <td>{applicant.state}</td>
-              <td>{applicant.zipCode}</td>
-              <td>{applicant.phoneNumber}</td>
-              <td>{applicant.email}</td>
-              <td>{applicant.preferredContact}</td>
-              <td>{applicant.dateOfSubmission}</td>
-              <td>
-                <a href={`/admin/applicants/${applicant.id}`}>View</a>
-              </td>
-              <td>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(applicant.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
-    </>
+    <div className="applicants-container">
+      <div className="applicants-header">
+        <button onClick={() => navigate("/admin")} className="back-btn-small">
+          ← Back
+        </button>
+        <h1>Applicants</h1>
+        <p>Manage and review all application submissions.</p>
+      </div>
+
+      <div className="applicants-card">
+        {applicants.length > 0 ? (
+          <>
+            <div className="table-wrapper">
+              <table className="applicants-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Submission Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((applicant) => (
+                    <tr key={applicant.id}>
+                      <td>
+                        <div className="applicant-name">
+                          <div className="avatar">
+                            {applicant.firstName.charAt(0)}
+                            {applicant.lastName.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="name-text">
+                              {applicant.firstName} {applicant.lastName}
+                            </p>
+                            <p className="id-text">ID: {applicant.id}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{applicant.email || "N/A"}</td>
+                      <td>{applicant.phoneNumber || "N/A"}</td>
+                      <td>{applicant.city || "N/A"}</td>
+                      <td>{applicant.state || "N/A"}</td>
+                      <td>{applicant.dateOfSubmission || "N/A"}</td>
+                      <td>
+                        <div className="action-buttons">
+                          <Link
+                            to={`/admin/applicants/${applicant.id}`}
+                            className="btn-view"
+                          >
+                            View
+                          </Link>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(applicant.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="pagination-container">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
+        ) : (
+          <div className="no-applicants">
+            <p>No applicants found</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
