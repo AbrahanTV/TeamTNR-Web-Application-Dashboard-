@@ -68,29 +68,35 @@ const AdminDashboard = () => {
           </div>
         </Link>
 
-        <div className="stat-card households">
-          <div className="stat-icon">🏠</div>
-          <div className="stat-content">
-            <h3>{stats.households}</h3>
-            <p>Households</p>
+        <Link to="/admin/households" className="text-decoration-none">
+          <div className="stat-card households">
+            <div className="stat-icon">🏠</div>
+            <div className="stat-content">
+              <h3>{stats.households}</h3>
+              <p>Households</p>
+            </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="stat-card residents">
-          <div className="stat-icon">👫</div>
-          <div className="stat-content">
-            <h3>{stats.residents}</h3>
-            <p>Total Residents</p>
+        <Link to="/admin/residents" className="text-decoration-none">
+          <div className="stat-card residents">
+            <div className="stat-icon">👫</div>
+            <div className="stat-content">
+              <h3>{stats.residents}</h3>
+              <p>Total Residents</p>
+            </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="stat-card pets">
-          <div className="stat-icon">🐾</div>
-          <div className="stat-content">
-            <h3>{stats.pets}</h3>
-            <p>Registered Pets</p>
+        <Link to="/admin/pets" className="text-decoration-none">
+          <div className="stat-card pets">
+            <div className="stat-icon">🐾</div>
+            <div className="stat-content">
+              <h3>{stats.pets}</h3>
+              <p>Registered Pets</p>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Bento Grid Content */}

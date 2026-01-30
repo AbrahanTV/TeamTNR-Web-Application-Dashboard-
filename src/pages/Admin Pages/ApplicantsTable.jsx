@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchApplicants, deleteApplicant } from "/api/applicants";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "/src/components/Pagination.jsx";
-import "/src/styles/applicants-table.css";
+import "/src/styles/tables.css";
 
 const ApplicantsTable = () => {
   const [applicants, setApplicants] = useState([]);

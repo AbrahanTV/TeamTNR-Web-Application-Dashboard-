@@ -69,10 +69,7 @@ const HouseholdTable = () => {
   return (
     <div className="table-container">
       <div className="table-header">
-        <button
-          onClick={() => navigate("/admin")}
-          className="back-btn-small mb-2"
-        >
+        <button onClick={() => navigate("/admin")} className="back-btn-small">
           ← Back
         </button>
         <h1>Households</h1>
