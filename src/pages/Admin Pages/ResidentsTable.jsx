@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchResidents, deleteResidents } from "../../../api/residents";
+import { Link, useNavigate } from "react-router-dom";
 import Pagination from "/src/components/Pagination.jsx";
+import "/src/styles/tables.css";
 
 const ResidentsTable = () => {
   const [resident, setResident] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -25,10 +29,21 @@ const ResidentsTable = () => {
         setError(err.message);
         setLoading(false);
       });
-  });
+  }, []);
 
-  if (loading) return <p>Loading applicants...</p>;
-  if (error) return <p className="text-danger">{error}</p>;
+  if (loading)
+    return (
+      <div className="table-loading">
+        <p>Loading applicants...</p>
+        <div className="spinner"></div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="table-error">
+        <p className="text-danger">{error}</p>
+      </div>
+    );
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this resident?")) {
@@ -44,46 +59,76 @@ const ResidentsTable = () => {
   };
 
   return (
-    <>
-      <h1>Residents</h1>
-      <table className="table table-responsive table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Household ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Relationship</th>
-            <th>Cat Allergies</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((resident) => (
-            <tr key={resident.id}>
-              <td>{resident.id}</td>
-              <td>{resident.householId}</td>
-              <td>{resident.memberName}</td>
-              <td>{resident.age}</td>
-              <td>{resident.relationship}</td>
-              <td>{resident.catAllergies ? "Yes" : "No"}</td>
-              <td>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(resident.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </table>
-    </>
+    <div className="table-container">
+      <div className="table-header">
+        <button onClick={() => navigate("/admin")} className="back-btn-small">
+          ← Back
+        </button>
+        <h1>Residents</h1>
+        <p>Manage and review all application submissions.</p>
+      </div>
+
+      <div className="table-card">
+        {resident.length > 0 ? (
+          <>
+            <div className="table-wrapper">
+              <table className="my-table overflow-hidden">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Household ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Relationship</th>
+                    <th>Cat Allergies</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((resident) => (
+                    <tr key={resident.id}>
+                      <td>{resident.id}</td>
+                      <td>{resident.householdId}</td>
+                      <td>{resident.memberName}</td>
+                      <td>{resident.age}</td>
+                      <td>{resident.relationship}</td>
+                      <td>{resident.catAllergies ? "Yes" : "No"}</td>
+                      <td>
+                        <div className="action-buttons">
+                          <Link
+                            to={`admin.applicants${resident.id}`}
+                            className="btn-view"
+                          >
+                            View
+                          </Link>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(resident.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="pagination-container">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
+        ) : (
+          <div className="no-applicants">
+            <p>No residents found.</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

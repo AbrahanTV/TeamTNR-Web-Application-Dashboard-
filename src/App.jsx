@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
@@ -16,7 +16,7 @@ import PetsTable from "./pages/Admin Pages/PetsTable";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           {/* PUBLIC ROUTES */}
           <Route element={<Layout />}>
@@ -35,7 +35,7 @@ function App() {
             <Route path="pets" element={<PetsTable />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
