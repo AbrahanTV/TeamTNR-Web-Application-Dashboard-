@@ -79,8 +79,8 @@ const PetsTable = () => {
   };
 
   return (
-    <div className="applicants-container">
-      <div className="applicants-header">
+    <div className="table-container">
+      <div className="table-header">
         <button onClick={() => navigate("/admin")} className="back-btn-small">
           ← Back
         </button>
@@ -88,11 +88,11 @@ const PetsTable = () => {
         <p>Manage and review all pet submissions and preferences.</p>
       </div>
 
-      <div className="applicants-card">
+      <div className="table-card">
         {pets.length > 0 ? (
           <>
             <div className="table-wrapper">
-              <table className="applicants-table overflow-hidden">
+              <table className="my-table overflow-hidden">
                 <thead>
                   <tr>
                     <th>ID</th>

@@ -42,7 +42,7 @@ const CurrentPets = memo(function CurrentPets({
         className={`form-control ${
           errors[`pet-${pet.id}-age`] ? "is-invalid" : ""
         }`}
-        type="text"
+        type="number"
         placeholder="Pet's age"
         value={pet.age}
         onChange={(e) => onChange(pet.id, { age: e.target.value })}
@@ -60,7 +60,9 @@ const CurrentPets = memo(function CurrentPets({
         value={pet.status}
         onChange={(e) => onChange(pet.id, { status: e.target.value })}
       >
-        <option value="">Spayed/Neutered Status</option>
+        <option value="" disabled>
+          Spayed/Neutered Status
+        </option>
         <option value="spayed">Spayed</option>
         <option value="neutered">Neutered</option>
         <option value="none">None</option>
