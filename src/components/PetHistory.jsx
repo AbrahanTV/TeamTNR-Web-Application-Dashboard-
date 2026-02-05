@@ -211,26 +211,37 @@ const PetHistory = forwardRef(({ householdId }, ref) => {
     },
 
     getFormData: () => {
-      // si el usuario no tiene mascotas, no enviar array con datos vacíos
-      const filteredPets = petsOwn === "yes" ? pets : [];
-
       return {
         householdId: householdId?.current,
-        petsOwn,
-        pets: filteredPets,
-        previousPets,
-        previousPetText,
-        vetName,
-        vetPhone,
-        contactVet,
-        ageGroup,
-        genderGroup,
-        noPreference,
-        personalityTraits,
-        whyAdopt,
-        catPlacement,
-        whereCatStays,
-        hoursAlone,
+
+        has_current_pets: petsOwn,
+        current_pets:
+          petsOwn === "yes"
+            ? pets.map((p) => ({
+                breed: p.breed,
+                age: Number(p.age),
+                status: p.status,
+                vaccinated: p.vaccinated,
+              }))
+            : [],
+
+        had_previous_pets: previousPets,
+        previous_pet_explanation:
+          previousPets === "yes" ? previousPetText : null,
+
+        vet_name: vetName || null,
+        vet_phone: vetPhone || null,
+        contact_vet_permission: contactVet,
+
+        cat_preference_age: noPreference ? null : ageGroup,
+        cat_preference_gender: noPreference ? null : genderGroup,
+        no_preference: noPreference,
+
+        personality_traits: personalityTraits,
+        why_adopt: whyAdopt,
+        cat_living_arrangement: catPlacement,
+        cat_stay_when_away: whereCatStays,
+        hours_alone: Number(hoursAlone),
       };
     },
 

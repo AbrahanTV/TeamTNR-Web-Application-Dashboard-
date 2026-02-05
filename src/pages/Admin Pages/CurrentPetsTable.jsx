@@ -18,10 +18,10 @@ const CurrentPetsTable = () => {
   const currentItems = currentPets.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(currentPets.length / itemsPerPage);
 
-  const householdToApplicant = households.reduce((acc, h) => {
+  /* const householdToApplicant = households.reduce((acc, h) => {
     acc[h.id] = h.applicantId;
     return acc;
-  }, {});
+  }, {}); */
 
   const navigate = useNavigate();
 
@@ -83,74 +83,32 @@ const CurrentPetsTable = () => {
                   <tr>
                     <th>ID</th>
                     <th>Household ID</th>
-                    <th>Current Pets</th>
-                    <th>Past Pets</th>
-                    <th>Vet Name</th>
-                    <th>Vet Phone</th>
-                    <th>Can contact Vet?</th>
-                    <th>Cat Age</th>
-                    <th>Cat Gender</th>
-                    <th>No preference</th>
-                    <th>Personality</th>
-                    <th>Adoption Reason</th>
-                    <th>Living Environment</th>
-                    <th>Stay When Away?</th>
-                    <th>Hours Alone</th>
+                    <th>Breed</th>
+                    <th>Age</th>
+                    <th>Status</th>
+                    <th>Vaccinated</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {currentItems.map((currentPet) => {
-                    const bothEmpty =
-                      !currentPet.preferenceAge && !currentPet.preferenceGender;
-                    const displayAge = bothEmpty
-                      ? "N/A"
-                      : currentPet.preferenceAge || "N/A";
-                    const displayGender = bothEmpty
-                      ? "N/A"
-                      : currentPet.preferenceGender || "N/A";
-                    const noPrefDisplay = bothEmpty
-                      ? "N/A"
-                      : currentPet.noPreference
-                        ? "Yes"
-                        : "No";
-
-                    return (
-                      <tr key={currentPet.id}>
-                        <td>{currentPet.id}</td>
-                        <td>{currentPet.householdId}</td>
-                        <td>{currentPet.hasCurrentcurrentPets}</td>
-                        <td>{currentPet.hadPreviouscurrentPets}</td>
-                        <td>{currentPet.vetName}</td>
-                        <td>{currentPet.vetPhone}</td>
-                        <td>{currentPet.contactVet}</td>
-                        <td>{displayAge}</td>
-                        <td>{displayGender}</td>
-                        <td>{noPrefDisplay}</td>
-                        <td>{currentPet.personalityTraits || "N/A"}</td>
-                        <td>{currentPet.whyAdopt || "N/A"}</td>
-                        <td>{currentPet.catLivingArrangement || "N/A"}</td>
-                        <td>{currentPet.catStayWhenAway || "N/A"}</td>
-                        <td>{currentPet.hoursAlone || "N/A"}</td>
-                        <td>
-                          <div className="action-buttons">
-                            <Link
-                              to={`/admin/applicants/${householdToApplicant[currentPet.householdId]}`}
-                              className="btn-view"
-                            >
-                              View
-                            </Link>
-                            <button
-                              className="btn-delete"
-                              onClick={() => handleDelete(currentPet.id)}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {currentItems.map((pet) => (
+                    <tr key={pet.id}>
+                      <td>{pet.id}</td>
+                      <td>{pet.householdId}</td>
+                      <td>{pet.petBreed}</td>
+                      <td>{pet.petAge}</td>
+                      <td>{pet.petStatus}</td>
+                      <td>{pet.petVaccinated ? "Yes" : "No"}</td>
+                      <td>
+                        <button
+                          className="btn-delete"
+                          onClick={() => handleDelete(pet.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

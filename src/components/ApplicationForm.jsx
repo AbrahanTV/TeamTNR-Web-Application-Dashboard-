@@ -156,7 +156,7 @@ const ApplicationForm = () => {
         }
       }
 
-      if (currentStepIndex === 2) {
+      /* if (currentStepIndex === 2) {
         const petData = petHistoryRef.current.getFormData();
 
         // 1️⃣ submit pet history
@@ -183,7 +183,7 @@ const ApplicationForm = () => {
 
         next();
         return;
-      }
+      } */
 
       applicationIdRef.current = submitJson.application_id;
       setApplicationId(submitJson.application_id);
@@ -195,6 +195,7 @@ const ApplicationForm = () => {
         currentRef.current?.markSubmitted?.();
         return;
       }
+      next();
     } catch (error) {
       console.error(`Error submitting step ${currentStepIndex + 1}:`, error);
       setStep1Fail(true);

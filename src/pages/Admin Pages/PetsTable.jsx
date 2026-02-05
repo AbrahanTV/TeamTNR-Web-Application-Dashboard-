@@ -92,7 +92,7 @@ const PetsTable = () => {
         {pets.length > 0 ? (
           <>
             <div className="table-wrapper">
-              <table className="my-table overflow-hidden">
+              <table className="my-table overflow-hidden table-responsive">
                 <thead>
                   <tr>
                     <th>ID</th>

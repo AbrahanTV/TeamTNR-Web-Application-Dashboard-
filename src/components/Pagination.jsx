@@ -33,7 +33,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           }`}
         >
           <button
-            className="page-link "
+            className="page-link my-btn"
             onClick={() => onPageChange(currentPage + 1)}
           >
             Next
