@@ -12,6 +12,7 @@ import ApplicantDetail from "./pages/Admin Pages/ApplicantDetail";
 import HouseholdTable from "./pages/Admin Pages/HouseholdTable";
 import ResidentsTable from "./pages/Admin Pages/ResidentsTable";
 import PetsTable from "./pages/Admin Pages/PetsTable";
+import CurrentPetsTable from "./pages/Admin Pages/CurrentPetsTable";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="households" element={<HouseholdTable />} />
             <Route path="residents" element={<ResidentsTable />} />
             <Route path="pets" element={<PetsTable />} />
+            <Route path="current_pets" element={<CurrentPetsTable />} />
           </Route>
         </Routes>
       </HashRouter>

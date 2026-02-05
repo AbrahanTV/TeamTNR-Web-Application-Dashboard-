@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchPets, deletePets } from "/api/pets";
+import { fetchCurrentPets, deleteCurrentPets } from "/api/currentPets";
 import { fetchHouseholds } from "/api/households";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "/src/components/Pagination.jsx";
 import "/src/styles/applicants-table.css";
-
-const PetsTable = () => {
-  const [pets, setPets] = useState([]);
-  const [households, setHouseholds] = useState([]);
+const CurrentPetsTable = () => {
+  const [currentPets, setCurrentPets] = useState([]);
+  const [households, setHouseholds] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,30 +15,20 @@ const PetsTable = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = pets.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(pets.length / itemsPerPage);
+  const currentItems = currentPets.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(currentPets.length / itemsPerPage);
 
   const householdToApplicant = households.reduce((acc, h) => {
     acc[h.id] = h.applicantId;
     return acc;
   }, {});
 
-  const normalizePets = (pet) => ({
-    ...pet,
-    vetName: pet.vetName?.trim() || "N/A",
-    vetPhone: pet.vetPhone?.trim() || "N/A",
-    hasCurrentPets: pet.hasCurrentPets ? "Yes" : "No",
-    hadPreviousPets: pet.hadPreviousPets ? "Yes" : "No",
-    contactVet: pet.contactVet ? "Yes" : "No",
-    preferenceAge: pet.preferenceAge?.trim() || "",
-    preferenceGender: pet.preferenceGender?.trim() || "",
-  });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    Promise.all([fetchPets(), fetchHouseholds()])
-      .then(([petsData, householdsData]) => {
-        const normalized = petsData.map(normalizePets);
-        setPets(normalized);
+    Promise.all([fetchCurrentPets(), fetchHouseholds()])
+      .then(([currentPetsData, householdsData]) => {
+        setCurrentPets(currentPetsData);
         setHouseholds(householdsData);
         setLoading(false);
       })
@@ -48,9 +37,6 @@ const PetsTable = () => {
         setLoading(false);
       });
   }, []);
-
-  const navigate = useNavigate();
-
   if (loading)
     return (
       <div className="table-loading">
@@ -71,8 +57,8 @@ const PetsTable = () => {
     }
 
     try {
-      await deletePets(id);
-      setPets((prev) => prev.filter((pet) => pet.id !== id));
+      await deleteCurrentPets(id);
+      setCurrentPets((prev) => prev.filter((pet) => pet.id !== id));
     } catch (err) {
       alert("Failed to delete pet");
     }
@@ -84,12 +70,12 @@ const PetsTable = () => {
         <button onClick={() => navigate("/admin")} className="back-btn-small">
           ← Back
         </button>
-        <h1>Pets</h1>
+        <h1>Current Pets</h1>
         <p>Manage and review all pet submissions and preferences.</p>
       </div>
 
       <div className="table-card">
-        {pets.length > 0 ? (
+        {currentPets.length > 0 ? (
           <>
             <div className="table-wrapper">
               <table className="my-table overflow-hidden">
@@ -114,49 +100,49 @@ const PetsTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentItems.map((pet) => {
+                  {currentItems.map((currentPet) => {
                     const bothEmpty =
-                      !pet.preferenceAge && !pet.preferenceGender;
+                      !currentPet.preferenceAge && !currentPet.preferenceGender;
                     const displayAge = bothEmpty
                       ? "N/A"
-                      : pet.preferenceAge || "N/A";
+                      : currentPet.preferenceAge || "N/A";
                     const displayGender = bothEmpty
                       ? "N/A"
-                      : pet.preferenceGender || "N/A";
+                      : currentPet.preferenceGender || "N/A";
                     const noPrefDisplay = bothEmpty
                       ? "N/A"
-                      : pet.noPreference
+                      : currentPet.noPreference
                         ? "Yes"
                         : "No";
 
                     return (
-                      <tr key={pet.id}>
-                        <td>{pet.id}</td>
-                        <td>{pet.householdId}</td>
-                        <td>{pet.hasCurrentPets}</td>
-                        <td>{pet.hadPreviousPets}</td>
-                        <td>{pet.vetName}</td>
-                        <td>{pet.vetPhone}</td>
-                        <td>{pet.contactVet}</td>
+                      <tr key={currentPet.id}>
+                        <td>{currentPet.id}</td>
+                        <td>{currentPet.householdId}</td>
+                        <td>{currentPet.hasCurrentcurrentPets}</td>
+                        <td>{currentPet.hadPreviouscurrentPets}</td>
+                        <td>{currentPet.vetName}</td>
+                        <td>{currentPet.vetPhone}</td>
+                        <td>{currentPet.contactVet}</td>
                         <td>{displayAge}</td>
                         <td>{displayGender}</td>
                         <td>{noPrefDisplay}</td>
-                        <td>{pet.personalityTraits || "N/A"}</td>
-                        <td>{pet.whyAdopt || "N/A"}</td>
-                        <td>{pet.catLivingArrangement || "N/A"}</td>
-                        <td>{pet.catStayWhenAway || "N/A"}</td>
-                        <td>{pet.hoursAlone || "N/A"}</td>
+                        <td>{currentPet.personalityTraits || "N/A"}</td>
+                        <td>{currentPet.whyAdopt || "N/A"}</td>
+                        <td>{currentPet.catLivingArrangement || "N/A"}</td>
+                        <td>{currentPet.catStayWhenAway || "N/A"}</td>
+                        <td>{currentPet.hoursAlone || "N/A"}</td>
                         <td>
                           <div className="action-buttons">
                             <Link
-                              to={`/admin/applicants/${householdToApplicant[pet.householdId]}`}
+                              to={`/admin/applicants/${householdToApplicant[currentPet.householdId]}`}
                               className="btn-view"
                             >
                               View
                             </Link>
                             <button
                               className="btn-delete"
-                              onClick={() => handleDelete(pet.id)}
+                              onClick={() => handleDelete(currentPet.id)}
                             >
                               Delete
                             </button>
@@ -186,4 +172,4 @@ const PetsTable = () => {
   );
 };
 
-export default PetsTable;
+export default CurrentPetsTable;

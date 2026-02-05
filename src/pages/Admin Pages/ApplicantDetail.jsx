@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchApplicants } from "/api/applicants";
 import { fetchHouseholds } from "/api/households";
 import { fetchResidents } from "/api/residents";
+import { fetchPets } from "/api/pets";
+import { fetchCurrentPets } from "/api/currentPets";
 import "/src/styles/applicant-detail.css";
 
 const ApplicantDetail = () => {
@@ -10,28 +12,55 @@ const ApplicantDetail = () => {
   const navigate = useNavigate();
   const [applicant, setApplicant] = useState(null);
   const [household, setHousehold] = useState(null);
-  const [resident, setResident] = useState(null);
+  const [residents, setResidents] = useState([]);
+  const [pet, setPet] = useState(null);
+  const [currentPet, setCurrentPets] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    Promise.all([fetchApplicants(), fetchHouseholds(), fetchResidents()])
-      .then(([applicantData, householdData, residentData]) => {
-        const foundApplicant = applicantData.find((a) => a.id == id);
-        const foundHousehold = householdData.find((h) => h.applicantId == id);
-        const foundResident = residentData.find((r) => r.householdId == id);
+    Promise.all([
+      fetchApplicants(),
+      fetchHouseholds(),
+      fetchResidents(),
+      fetchPets(),
+      fetchCurrentPets(),
+    ])
+      .then(
+        ([
+          applicantData,
+          householdData,
+          residentData,
+          petData,
+          currentPetData,
+        ]) => {
+          const foundApplicant = applicantData.find((a) => a.id == id);
+          const foundHousehold = householdData.find((h) => h.applicantId == id);
+          const foundResidents = foundHousehold
+            ? residentData.filter((r) => r.householdId == foundHousehold.id)
+            : [];
+          const foundPet = foundHousehold
+            ? petData.find((p) => p.householdId == foundHousehold.id)
+            : null;
+          const foundCurrentPet = foundHousehold
+            ? currentPetData.find((p) => p.householdId == foundHousehold.id)
+            : null;
 
-        if (!foundApplicant) {
-          setError("Applicant not found");
+          if (!foundApplicant) {
+            setError("Applicant not found");
+            setLoading(false);
+            return;
+          }
+
+          setApplicant(foundApplicant);
+          if (foundHousehold) setHousehold(foundHousehold);
+          setResidents(foundResidents);
+          if (foundPet) setPet(foundPet);
+          if (foundCurrentPet) setPet(foundCurrentPet);
           setLoading(false);
-          return;
-        }
-
-        setApplicant(foundApplicant);
-        if (foundHousehold) setHousehold(foundHousehold);
-        if (foundResident) setResident(foundResident);
-        setLoading(false);
-      })
+        },
+      )
       .catch((err) => {
         setError(err.message);
         setLoading(false);
@@ -98,16 +127,8 @@ const ApplicantDetail = () => {
                 </div>
                 <div className="detail-field">
                   <label>Preferred Contact</label>
-                  <p>{applicant.preferredContact}</p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field full-width">
-                  <label>Address</label>
-                  <p>
-                    {applicant.street}, {applicant.city}, {applicant.state}{" "}
-                    {applicant.zipCode}
+                  <p className="text-capitalize">
+                    {applicant.preferredContact}
                   </p>
                 </div>
               </div>
@@ -149,8 +170,29 @@ const ApplicantDetail = () => {
             <div className="detail-content">
               <div className="detail-row">
                 <div className="detail-field">
-                  <label>Household ID</label>
-                  <p>{household.id}</p>
+                  <label>Address</label>
+                  <p href={`tel:${applicant.phoneNumber}`} className="">
+                    {applicant.street}, {applicant.city}, {applicant.state}{" "}
+                    {applicant.zipCode}
+                  </p>
+                </div>
+                <div className="detail-field">
+                  <label>Rent or Own</label>
+                  <p className="text-capitalize">
+                    {household.rentOwn || "N/A"}
+                  </p>
+                </div>
+              </div>
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Type of Residence</label>
+                  <p className="text-capitalize">
+                    {household.residenceType || "N/A"}
+                  </p>
+                </div>
+                <div className="detail-field">
+                  <label>Pets Allowed</label>
+                  <p>{household.petsAllowed ? "Yes" : "No"}</p>
                 </div>
               </div>
 
@@ -161,19 +203,44 @@ const ApplicantDetail = () => {
                 </div>
               </div>
 
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Rent or Own</label>
-                  <p className="badge-inline">{household.rentOwn || "N/A"}</p>
-                </div>
+              <div className="card-header-detail">
+                <h2>👤 Household Members ({residents.length})</h2>
               </div>
 
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Pets Allowed</label>
-                  <p>{household.petsAllowed ? "✅ Yes" : "❌ No"}</p>
+              {residents.length > 0 ? (
+                <div className="residents-list">
+                  {residents.map((resident, index) => (
+                    <div key={index} className="resident-item">
+                      <div className="detail-row">
+                        <div className="detail-field">
+                          <label>Name</label>
+                          <p>{resident.memberName || "N/A"}</p>
+                        </div>
+                        <div className="detail-field">
+                          <label>Age</label>
+                          <p>{resident.age || "N/A"}</p>
+                        </div>
+                      </div>
+
+                      <div className="detail-row">
+                        <div className="detail-field">
+                          <label>Relationship</label>
+                          <p className="text-capitalize">
+                            {resident.relationship || "N/A"}
+                          </p>
+                        </div>
+                        <div className="detail-field">
+                          <label>Cat Allergies</label>
+                          <p>{resident.catAllergies ? "Yes" : "No"}</p>
+                        </div>
+                      </div>
+                      {index < residents.length - 1 && <hr />}
+                    </div>
+                  ))}
                 </div>
-              </div>
+              ) : (
+                <p>No resident information available</p>
+              )}
             </div>
           </div>
         ) : (
@@ -182,34 +249,36 @@ const ApplicantDetail = () => {
           </div>
         )}
 
-        {resident ? (
+        {/* {resident ? (
           <div className="detail-card resident-card">
             <div className="card-header-detail">
-              <h2>👤 Resident Information</h2>
+              <h2>👤 Household Members</h2>
             </div>
             <div className="detail-content">
               <div className="detail-row">
                 <div className="detail-field">
-                  <label>Resident ID</label>
-                  <p>{resident.id}</p>
+                  <label>Name</label>
+                  <p>{resident.memberName}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Age</label>
+                  <p>{resident.age}</p>
                 </div>
               </div>
 
               <div className="detail-row">
                 <div className="detail-field">
-                  <label>First Name</label>
-                  <p>{resident.firstName}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Last Name</label>
-                  <p>{resident.lastName}</p>
+                  <label>Relationship</label>
+                  <p className="text-capitalize">
+                    {resident.relationship || "N/A"}
+                  </p>
                 </div>
               </div>
 
               <div className="detail-row">
-                <div className="detail-field full-width">
-                  <label>Date of Birth</label>
-                  <p>{resident.dob || "N/A"}</p>
+                <div className="detail-field">
+                  <label>Cat Allergies</label>
+                  <p>{resident.catAllergies ? "Yes" : "No"}</p>
                 </div>
               </div>
             </div>
@@ -217,6 +286,180 @@ const ApplicantDetail = () => {
         ) : (
           <div className="detail-card empty-state">
             <p>No resident information available</p>
+          </div>
+        )} */}
+
+        {pet ? (
+          <div className="detail-card resident-card">
+            <div className="card-header-detail">
+              <h2>🐱 Pet History</h2>
+            </div>
+
+            <div className="detail-content">
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Current Pets</label>
+                  <p>{pet.hasCurrentPets ? "Yes" : "No"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Previous Pets</label>
+                  <p>{pet.previousPets || "None"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Vet Name</label>
+                  <p>{pet.vetName || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Vet Phone</label>
+                  <p>{pet.vetPhone || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Contact Vet?</label>
+                  <p>{pet.contactVet ? "Yes" : "No"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>No Preference</label>
+                  <p>{pet.noPreference ? "Yes" : "No"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Cat Age Preference</label>
+                  <p>{pet.preferenceAge || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Cat Gender Preference</label>
+                  <p>{pet.preferenceGender || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Personality Traits</label>
+                  <p>{pet.personalityTraits || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Why Adopt?</label>
+                  <p>{pet.whyAdopt || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Living Environment</label>
+                  <p>{pet.catLivingArrangement || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Cat Stays When Away?</label>
+                  <p>{pet.catStayWhenAway || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Hours Alone</label>
+                  <p>{pet.hoursAlone || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="detail-card empty-state">
+            <p>No pet information available</p>
+          </div>
+        )}
+
+        {currentPet ? (
+          <div className="detail-card resident-card">
+            <div className="card-header-detail">
+              <h2>🐱 Pet History</h2>
+            </div>
+
+            <div className="detail-content">
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Current Pets</label>
+                  <p>{pet.hasCurrentPets ? "Yes" : "No"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Previous Pets</label>
+                  <p>{pet.previousPets || "None"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Vet Name</label>
+                  <p>{pet.vetName || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Vet Phone</label>
+                  <p>{pet.vetPhone || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Contact Vet?</label>
+                  <p>{pet.contactVet ? "Yes" : "No"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>No Preference</label>
+                  <p>{pet.noPreference ? "Yes" : "No"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Cat Age Preference</label>
+                  <p>{pet.preferenceAge || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Cat Gender Preference</label>
+                  <p>{pet.preferenceGender || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Personality Traits</label>
+                  <p>{pet.personalityTraits || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Why Adopt?</label>
+                  <p>{pet.whyAdopt || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Living Environment</label>
+                  <p>{pet.catLivingArrangement || "N/A"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Cat Stays When Away?</label>
+                  <p>{pet.catStayWhenAway || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Hours Alone</label>
+                  <p>{pet.hoursAlone || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="detail-card empty-state">
+            <p>No pet information available</p>
           </div>
         )}
 

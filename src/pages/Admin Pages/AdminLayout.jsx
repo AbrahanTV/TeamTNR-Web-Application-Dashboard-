@@ -98,6 +98,9 @@ const AdminLayout = () => {
           <Link to="pets" className="w-fit">
             Pets
           </Link>
+          <Link to="current_pets" className="w-fit">
+            Current Pets
+          </Link>
         </aside>
 
         <main className="content">
