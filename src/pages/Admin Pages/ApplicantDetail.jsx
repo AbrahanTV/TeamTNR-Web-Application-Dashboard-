@@ -14,7 +14,7 @@ const ApplicantDetail = () => {
   const [household, setHousehold] = useState(null);
   const [residents, setResidents] = useState([]);
   const [pet, setPet] = useState(null);
-  const [currentPet, setCurrentPets] = useState(null);
+  const [currentPets, setCurrentPets] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,9 +43,9 @@ const ApplicantDetail = () => {
           const foundPet = foundHousehold
             ? petData.find((p) => p.householdId == foundHousehold.id)
             : null;
-          const foundCurrentPet = foundHousehold
-            ? currentPetData.find((p) => p.householdId == foundHousehold.id)
-            : null;
+          const foundCurrentPets = foundHousehold
+            ? currentPetData.filter((p) => p.householdId == foundHousehold.id)
+            : [];
 
           if (!foundApplicant) {
             setError("Applicant not found");
@@ -57,7 +57,7 @@ const ApplicantDetail = () => {
           if (foundHousehold) setHousehold(foundHousehold);
           setResidents(foundResidents);
           if (foundPet) setPet(foundPet);
-          if (foundCurrentPet) setPet(foundCurrentPet);
+          setCurrentPets(foundCurrentPets);
           setLoading(false);
         },
       )
@@ -249,46 +249,6 @@ const ApplicantDetail = () => {
           </div>
         )}
 
-        {/* {resident ? (
-          <div className="detail-card resident-card">
-            <div className="card-header-detail">
-              <h2>👤 Household Members</h2>
-            </div>
-            <div className="detail-content">
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Name</label>
-                  <p>{resident.memberName}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Age</label>
-                  <p>{resident.age}</p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Relationship</label>
-                  <p className="text-capitalize">
-                    {resident.relationship || "N/A"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Cat Allergies</label>
-                  <p>{resident.catAllergies ? "Yes" : "No"}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="detail-card empty-state">
-            <p>No resident information available</p>
-          </div>
-        )} */}
-
         {pet ? (
           <div className="detail-card resident-card">
             <div className="card-header-detail">
@@ -297,6 +257,35 @@ const ApplicantDetail = () => {
 
             <div className="detail-content">
               <div className="detail-row">
+                {currentPets.map((pet, index) => (
+                  <div key={index} className="pet-item">
+                    <div className="detail-row">
+                      <div className="detail-field">
+                        <label>Breed</label>
+                        <p>{pet.petBreed}</p>
+                      </div>
+                      <div className="detail-field">
+                        <label>Age</label>
+                        <p>{pet.petAge}</p>
+                      </div>
+                    </div>
+
+                    <div className="detail-row">
+                      <div className="detail-field">
+                        <label>Status</label>
+                        <p className="text-capitalize">{pet.petStatus}</p>
+                      </div>
+                      <div className="detail-field">
+                        <label>Vaccinated</label>
+                        <p>{pet.petVaccinated ? "Yes" : "No"}</p>
+                      </div>
+                    </div>
+
+                    {index < currentPets.length - 1 && <hr />}
+                  </div>
+                ))}
+              </div>
+              <div className="detail-row">
                 <div className="detail-field">
                   <label>Current Pets</label>
                   <p>{pet.hasCurrentPets ? "Yes" : "No"}</p>
@@ -376,92 +365,47 @@ const ApplicantDetail = () => {
           </div>
         )}
 
-        {currentPet ? (
+        {/* {currentPets.length > 0 ? (
           <div className="detail-card resident-card">
             <div className="card-header-detail">
-              <h2>🐱 Pet History</h2>
+              <h2>🐾 Current Pets ({currentPets.length})</h2>
             </div>
 
             <div className="detail-content">
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Current Pets</label>
-                  <p>{pet.hasCurrentPets ? "Yes" : "No"}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Previous Pets</label>
-                  <p>{pet.previousPets || "None"}</p>
-                </div>
-              </div>
+              {currentPets.map((pet, index) => (
+                <div key={index} className="pet-item">
+                  <div className="detail-row">
+                    <div className="detail-field">
+                      <label>Breed</label>
+                      <p>{pet.petBreed}</p>
+                    </div>
+                    <div className="detail-field">
+                      <label>Age</label>
+                      <p>{pet.petAge}</p>
+                    </div>
+                  </div>
 
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Vet Name</label>
-                  <p>{pet.vetName || "N/A"}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Vet Phone</label>
-                  <p>{pet.vetPhone || "N/A"}</p>
-                </div>
-              </div>
+                  <div className="detail-row">
+                    <div className="detail-field">
+                      <label>Status</label>
+                      <p className="text-capitalize">{pet.petStatus}</p>
+                    </div>
+                    <div className="detail-field">
+                      <label>Vaccinated</label>
+                      <p>{pet.petVaccinated ? "Yes" : "No"}</p>
+                    </div>
+                  </div>
 
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Contact Vet?</label>
-                  <p>{pet.contactVet ? "Yes" : "No"}</p>
+                  {index < currentPets.length - 1 && <hr />}
                 </div>
-                <div className="detail-field">
-                  <label>No Preference</label>
-                  <p>{pet.noPreference ? "Yes" : "No"}</p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Cat Age Preference</label>
-                  <p>{pet.preferenceAge || "N/A"}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Cat Gender Preference</label>
-                  <p>{pet.preferenceGender || "N/A"}</p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Personality Traits</label>
-                  <p>{pet.personalityTraits || "N/A"}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Why Adopt?</label>
-                  <p>{pet.whyAdopt || "N/A"}</p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Living Environment</label>
-                  <p>{pet.catLivingArrangement || "N/A"}</p>
-                </div>
-                <div className="detail-field">
-                  <label>Cat Stays When Away?</label>
-                  <p>{pet.catStayWhenAway || "N/A"}</p>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-field">
-                  <label>Hours Alone</label>
-                  <p>{pet.hoursAlone || "N/A"}</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         ) : (
           <div className="detail-card empty-state">
             <p>No pet information available</p>
           </div>
-        )}
+        )} */}
 
         <div className="detail-card actions-card">
           <h2>⚡ Quick Actions</h2>
