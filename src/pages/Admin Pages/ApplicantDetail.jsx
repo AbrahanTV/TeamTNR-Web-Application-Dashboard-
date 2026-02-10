@@ -5,6 +5,8 @@ import { fetchHouseholds } from "/api/households";
 import { fetchResidents } from "/api/residents";
 import { fetchPets } from "/api/pets";
 import { fetchCurrentPets } from "/api/currentPets";
+import { fetchLifestyle } from "/api/lifestyle";
+import { fetchReferences } from "/api/references";
 import "/src/styles/applicant-detail.css";
 
 const ApplicantDetail = () => {
@@ -15,6 +17,8 @@ const ApplicantDetail = () => {
   const [residents, setResidents] = useState([]);
   const [pet, setPet] = useState(null);
   const [currentPets, setCurrentPets] = useState([]);
+  const [lifestyle, setLifestyle] = useState([]);
+  const [references, setReferences] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,6 +30,8 @@ const ApplicantDetail = () => {
       fetchResidents(),
       fetchPets(),
       fetchCurrentPets(),
+      fetchLifestyle(),
+      fetchReferences(),
     ])
       .then(
         ([
@@ -34,6 +40,8 @@ const ApplicantDetail = () => {
           residentData,
           petData,
           currentPetData,
+          lifestyleData,
+          referencesData,
         ]) => {
           const foundApplicant = applicantData.find((a) => a.id == id);
           const foundHousehold = householdData.find((h) => h.applicantId == id);
@@ -45,6 +53,12 @@ const ApplicantDetail = () => {
             : null;
           const foundCurrentPets = foundHousehold
             ? currentPetData.filter((p) => p.householdId == foundHousehold.id)
+            : [];
+          const foundLifestyle = foundHousehold
+            ? lifestyleData.filter((p) => p.householdId == foundHousehold.id)
+            : [];
+          const foundReferences = foundHousehold
+            ? referencesData.filter((p) => p.householdId == foundHousehold.id)
             : [];
 
           if (!foundApplicant) {
@@ -58,6 +72,8 @@ const ApplicantDetail = () => {
           setResidents(foundResidents);
           if (foundPet) setPet(foundPet);
           setCurrentPets(foundCurrentPets);
+          setLifestyle(foundLifestyle[0] || null);
+          setReferences(foundReferences);
           setLoading(false);
         },
       )
@@ -256,35 +272,7 @@ const ApplicantDetail = () => {
             </div>
 
             <div className="detail-content">
-              <div className="detail-row">
-                {currentPets.map((pet, index) => (
-                  <div key={index} className="pet-item">
-                    <div className="detail-row">
-                      <div className="detail-field">
-                        <label>Breed</label>
-                        <p>{pet.petBreed}</p>
-                      </div>
-                      <div className="detail-field">
-                        <label>Age</label>
-                        <p>{pet.petAge}</p>
-                      </div>
-                    </div>
-
-                    <div className="detail-row">
-                      <div className="detail-field">
-                        <label>Status</label>
-                        <p className="text-capitalize">{pet.petStatus}</p>
-                      </div>
-                      <div className="detail-field">
-                        <label>Vaccinated</label>
-                        <p>{pet.petVaccinated ? "Yes" : "No"}</p>
-                      </div>
-                    </div>
-
-                    {index < currentPets.length - 1 && <hr />}
-                  </div>
-                ))}
-              </div>
+              <div className="detail-row"></div>
               <div className="detail-row">
                 <div className="detail-field">
                   <label>Current Pets</label>
@@ -365,7 +353,7 @@ const ApplicantDetail = () => {
           </div>
         )}
 
-        {/* {currentPets.length > 0 ? (
+        {currentPets.length > 0 ? (
           <div className="detail-card resident-card">
             <div className="card-header-detail">
               <h2>🐾 Current Pets ({currentPets.length})</h2>
@@ -403,9 +391,46 @@ const ApplicantDetail = () => {
           </div>
         ) : (
           <div className="detail-card empty-state">
-            <p>No pet information available</p>
+            <p>No current pets information available</p>
           </div>
-        )} */}
+        )}
+
+        {lifestyle ? (
+          <div className="detail-card resident-card">
+            <div className="card-header-detail">
+              <h2>Lifestyle</h2>
+            </div>
+
+            <div className="detail-content">
+              <div className="detail-row"></div>
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Will declaw</label>
+                  <p>{lifestyle.declaw ? "Yes" : "No"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>move plan</label>
+                  <p>{lifestyle.movePlan}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Financially Stable</label>
+                  <p>{lifestyle.financiallyStable ? "Yes" : "No"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Cat Care</label>
+                  <p>{lifestyle.catCare}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="detail-card empty-state">
+            <p>No lifestyle information available</p>
+          </div>
+        )}
 
         <div className="detail-card actions-card">
           <h2>⚡ Quick Actions</h2>

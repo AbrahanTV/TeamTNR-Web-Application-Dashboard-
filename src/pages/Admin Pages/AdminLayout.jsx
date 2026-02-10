@@ -101,6 +101,12 @@ const AdminLayout = () => {
           <Link to="current_pets" className="w-fit">
             Current Pets
           </Link>
+          <Link to="lifestyle" className="w-fit">
+            Lifestyle
+          </Link>
+          <Link to="references" className="w-fit">
+            References
+          </Link>
         </aside>
 
         <main className="content">

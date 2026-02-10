@@ -30,7 +30,7 @@ const ApplicationForm = () => {
         applicationId={applicationIdRef}
       />,
       <PetHistory ref={petHistoryRef} householdId={householdIdRef} />,
-      <Lifestyle ref={lifestyleRef} />,
+      <Lifestyle ref={lifestyleRef} householdId={householdIdRef} />,
       <Agreement ref={agreementRef} />,
     ]);
 
@@ -155,35 +155,6 @@ const ApplicationForm = () => {
           return;
         }
       }
-
-      /* if (currentStepIndex === 2) {
-        const petData = petHistoryRef.current.getFormData();
-
-        // 1️⃣ submit pet history
-        await fetch(`${VITE_API_BASE}/api/forms/pet-history/submit-step-3`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...petData,
-            householdId: householdIdRef.current,
-          }),
-        });
-
-        // 2️⃣ submit current pets (ONLY if any)
-        if (petData.current_pets?.length) {
-          await fetch(`${VITE_API_BASE}/api/forms/current-pets/submit`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              householdId: householdIdRef.current,
-              current_pets: petData.current_pets,
-            }),
-          });
-        }
-
-        next();
-        return;
-      } */
 
       applicationIdRef.current = submitJson.application_id;
       setApplicationId(submitJson.application_id);
