@@ -14,6 +14,7 @@ import PetsTable from "./pages/Admin Pages/PetsTable";
 import CurrentPetsTable from "./pages/Admin Pages/CurrentPetsTable";
 import LifestyleTable from "./pages/Admin Pages/LifestyleTable";
 import ReferencesTable from "./pages/Admin Pages/ReferencesTable";
+import AgreementTable from "./pages/Admin Pages/AgreementTable";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="current_pets" element={<CurrentPetsTable />} />
             <Route path="lifestyle" element={<LifestyleTable />} />
             <Route path="references" element={<ReferencesTable />} />
+            <Route path="agreement" element={<AgreementTable />} />
           </Route>
         </Routes>
       </HashRouter>

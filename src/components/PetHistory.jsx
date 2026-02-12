@@ -520,22 +520,20 @@ const PetHistory = forwardRef(({ householdId }, ref) => {
         <div className="invalid-feedback d-block">{errors.whyAdopt}</div>
       )}
 
-      <label className="form-label mt-3">Where will your cat live?</label>
+      <label className="form-label mt-3">Cat will stay indoors</label>
       <div className="d-flex gap-4">
-        {["indoor", "outdoor", "both"].map((opt) => (
-          <label key={opt}>
-            <input
-              className="form-check-input me-1"
-              type="radio"
-              checked={catPlacement === opt}
-              onChange={() => {
-                setCatPlacement(opt);
-                clearError("catPlacement");
-              }}
-            />
-            {opt.charAt(0).toUpperCase() + opt.slice(1)}
-          </label>
-        ))}
+        <label>
+          <input
+            className="form-check-input me-1"
+            type="radio"
+            checked={catPlacement === "yes"}
+            onChange={() => {
+              setCatPlacement("yes");
+              clearError("catPlacement");
+            }}
+          />
+          Yes
+        </label>
       </div>
       {errors.catPlacement && (
         <div className="invalid-feedback d-block">{errors.catPlacement}</div>

@@ -107,6 +107,9 @@ const AdminLayout = () => {
           <Link to="references" className="w-fit">
             References
           </Link>
+          <Link to="agreement" className="w-fit">
+            Agreement
+          </Link>
         </aside>
 
         <main className="content">

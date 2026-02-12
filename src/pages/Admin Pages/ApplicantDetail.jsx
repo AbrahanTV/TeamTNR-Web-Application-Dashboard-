@@ -7,6 +7,7 @@ import { fetchPets } from "/api/pets";
 import { fetchCurrentPets } from "/api/currentPets";
 import { fetchLifestyle } from "/api/lifestyle";
 import { fetchReferences } from "/api/references";
+import { fetchAgreement } from "/api/agreement";
 import "/src/styles/applicant-detail.css";
 
 const ApplicantDetail = () => {
@@ -19,6 +20,7 @@ const ApplicantDetail = () => {
   const [currentPets, setCurrentPets] = useState([]);
   const [lifestyle, setLifestyle] = useState([]);
   const [references, setReferences] = useState([]);
+  const [agreement, setAgreement] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,6 +34,7 @@ const ApplicantDetail = () => {
       fetchCurrentPets(),
       fetchLifestyle(),
       fetchReferences(),
+      fetchAgreement(),
     ])
       .then(
         ([
@@ -42,6 +45,7 @@ const ApplicantDetail = () => {
           currentPetData,
           lifestyleData,
           referencesData,
+          agreementData,
         ]) => {
           const foundApplicant = applicantData.find((a) => a.id == id);
           const foundHousehold = householdData.find((h) => h.applicantId == id);
@@ -60,6 +64,7 @@ const ApplicantDetail = () => {
           const foundReferences = foundHousehold
             ? referencesData.filter((p) => p.householdId == foundHousehold.id)
             : [];
+          const foundAgreement = agreementData.find((a) => a.applicantId == id);
 
           if (!foundApplicant) {
             setError("Applicant not found");
@@ -74,6 +79,7 @@ const ApplicantDetail = () => {
           setCurrentPets(foundCurrentPets);
           setLifestyle(foundLifestyle[0] || null);
           setReferences(foundReferences);
+          setAgreement(foundAgreement || null);
           setLoading(false);
         },
       )
@@ -301,7 +307,7 @@ const ApplicantDetail = () => {
                   <p>{pet.contactVet ? "Yes" : "No"}</p>
                 </div>
                 <div className="detail-field">
-                  <label>No Preference</label>
+                  <label>Preference</label>
                   <p>{pet.noPreference ? "Yes" : "No"}</p>
                 </div>
               </div>
@@ -331,7 +337,7 @@ const ApplicantDetail = () => {
               <div className="detail-row">
                 <div className="detail-field">
                   <label>Living Environment</label>
-                  <p>{pet.catLivingArrangement || "N/A"}</p>
+                  <p>{pet.catLivingArrangement ? "Yes" : "No"}</p>
                 </div>
                 <div className="detail-field">
                   <label>Cat Stays When Away?</label>
@@ -424,6 +430,42 @@ const ApplicantDetail = () => {
                   <p>{lifestyle.catCare}</p>
                 </div>
               </div>
+
+              {references.length > 0 && (
+                <>
+                  <div className="card-header-detail">
+                    <h2>📞 References ({references.length})</h2>
+                  </div>
+                  <div className="references-list">
+                    {references.map((reference, index) => (
+                      <div key={index} className="reference-item">
+                        <div className="detail-row">
+                          <div className="detail-field">
+                            <label>Name</label>
+                            <p>{reference.referenceName || "N/A"}</p>
+                          </div>
+                          <div className="detail-field">
+                            <label>Phone</label>
+                            <p>
+                              {reference.referencePhone ? (
+                                <a
+                                  href={`tel:${reference.referencePhone}`}
+                                  className="link"
+                                >
+                                  {reference.referencePhone}
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                        {index < references.length - 1 && <hr />}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ) : (
@@ -432,7 +474,43 @@ const ApplicantDetail = () => {
           </div>
         )}
 
-        <div className="detail-card actions-card">
+        {agreement ? (
+          <div className="detail-card resident-card">
+            <div className="card-header-detail">
+              <h2>📝 Agreement</h2>
+            </div>
+
+            <div className="detail-content">
+              <div className="detail-row">
+                <div className="detail-field">
+                  <label>Agreement Status</label>
+                  <p>{agreement.agreed ? "Agreed" : "Not Agreed"}</p>
+                </div>
+                <div className="detail-field">
+                  <label>Signature</label>
+                  <p>{agreement.signature || "N/A"}</p>
+                </div>
+              </div>
+
+              <div className="detail-row">
+                <div className="detail-field full-width">
+                  <label>Signed Date</label>
+                  <p>
+                    {agreement.signedDate
+                      ? new Date(agreement.signedDate).toLocaleDateString()
+                      : "N/A"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="detail-card empty-state">
+            <p>No agreement information available</p>
+          </div>
+        )}
+
+        {/* <div className="detail-card actions-card">
           <h2>⚡ Quick Actions</h2>
           <div className="action-list">
             <button className="action-item edit">✏️ Edit</button>
@@ -440,7 +518,7 @@ const ApplicantDetail = () => {
             <button className="action-item reject">❌ Reject</button>
             <button className="action-item print">🖨️ Print</button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

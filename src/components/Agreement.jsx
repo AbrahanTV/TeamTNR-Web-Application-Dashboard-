@@ -2,7 +2,7 @@ import { useState, forwardRef, useImperativeHandle } from "react";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { useNavigate } from "react-router-dom";
 
-const Agreement = forwardRef((props, ref) => {
+const Agreement = forwardRef(({ applicantId }, ref) => {
   const { errors, validate, setErrors } = useFormValidation();
   const navigate = useNavigate();
 
@@ -24,7 +24,12 @@ const Agreement = forwardRef((props, ref) => {
       const isValid = validate(required);
       return isValid;
     },
-    getFormData: () => ({ agree, signature, date }),
+    getFormData: () => ({
+      applicantId: applicantId?.current,
+      agree,
+      signature,
+      date,
+    }),
     setBackendErrors: (backendErrors) => setErrors(backendErrors),
     markSubmitted: () => setSubmitted(true),
     get isSubmitted() {
