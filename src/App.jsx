@@ -1,7 +1,6 @@
 import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Contact from "./pages/Contact";
 import Layout from "./components/Layout";
 import ApplicationPage from "./pages/ApplicationPage";
 
@@ -12,6 +11,10 @@ import ApplicantDetail from "./pages/Admin Pages/ApplicantDetail";
 import HouseholdTable from "./pages/Admin Pages/HouseholdTable";
 import ResidentsTable from "./pages/Admin Pages/ResidentsTable";
 import PetsTable from "./pages/Admin Pages/PetsTable";
+import CurrentPetsTable from "./pages/Admin Pages/CurrentPetsTable";
+import LifestyleTable from "./pages/Admin Pages/LifestyleTable";
+import ReferencesTable from "./pages/Admin Pages/ReferencesTable";
+import AgreementTable from "./pages/Admin Pages/AgreementTable";
 
 function App() {
   return (
@@ -21,7 +24,6 @@ function App() {
           {/* PUBLIC ROUTES */}
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
-            <Route path="contact" element={<Contact />} />
             <Route path="application-page" element={<ApplicationPage />} />
           </Route>
 
@@ -33,6 +35,10 @@ function App() {
             <Route path="households" element={<HouseholdTable />} />
             <Route path="residents" element={<ResidentsTable />} />
             <Route path="pets" element={<PetsTable />} />
+            <Route path="current_pets" element={<CurrentPetsTable />} />
+            <Route path="lifestyle" element={<LifestyleTable />} />
+            <Route path="references" element={<ReferencesTable />} />
+            <Route path="agreement" element={<AgreementTable />} />
           </Route>
         </Routes>
       </HashRouter>

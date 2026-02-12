@@ -69,7 +69,7 @@ const Reference = memo(function Reference({
 });
 
 // ----- Main Component -----
-const Lifestyle = forwardRef((props, ref) => {
+const Lifestyle = forwardRef(({ householdId }, ref) => {
   const { errors, validate, setErrors } = useFormValidation();
   const [references, setReferences] = useState([
     { id: 1, name: "", phone: "", removable: false },
@@ -93,7 +93,7 @@ const Lifestyle = forwardRef((props, ref) => {
 
   const handleRefChange = useCallback((id, partial) => {
     setReferences((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, ...partial } : r))
+      prev.map((r) => (r.id === id ? { ...r, ...partial } : r)),
     );
     const changedField = Object.keys(partial)[0];
     if (changedField) clearError(`ref-${id}-${changedField}`);
@@ -101,7 +101,7 @@ const Lifestyle = forwardRef((props, ref) => {
 
   const handleRemoveRef = useCallback(
     (id) => setReferences((prev) => prev.filter((r) => r.id !== id)),
-    []
+    [],
   );
 
   const addReference = useCallback(() => {
@@ -139,6 +139,7 @@ const Lifestyle = forwardRef((props, ref) => {
     },
 
     getFormData: () => ({
+      householdId: householdId?.current,
       behavior,
       declaw,
       ifMoves,

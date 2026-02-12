@@ -22,12 +22,12 @@ const Navigation = () => {
         <nav className="navbar">
           <ul className="font-family fw-bold fs-3 d-flex list-unstyled gap-4 m-0 p-0">
             <li>
-              <Link
+              {/* <Link
                 to="/application-page"
                 className="text-white text-decoration-none links-hover"
               >
                 Application Form
-              </Link>
+              </Link> */}
             </li>
             <li>
               {/* <Link
@@ -36,12 +36,22 @@ const Navigation = () => {
               >
                 Contact Us
               </Link> */}
-              <a
-                href="#footer"
+              {/* <a
+                href="/footer"
                 className="text-white text-decoration-none links-hover"
               >
                 Contact Us
-              </a>
+              </a> */}
+              <button
+                className="text-white text-decoration-none links-hover bg-transparent border-0"
+                onClick={() =>
+                  document.getElementById("footer")?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+              >
+                Contact Us
+              </button>
             </li>
           </ul>
         </nav>

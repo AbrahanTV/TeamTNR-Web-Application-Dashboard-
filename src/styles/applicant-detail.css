@@ -51,13 +51,14 @@
 /* Detail Grid - Bento Layout */
 .detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 20px;
   margin-bottom: 40px;
 }
 
 /* Detail Cards */
 .detail-card {
+  /* height: fit-content; */
   background: white;
   border-radius: 15px;
   padding: 30px;
@@ -119,6 +120,7 @@
 .detail-field {
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .detail-field.full-width {

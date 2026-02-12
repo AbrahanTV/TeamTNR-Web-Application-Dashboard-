@@ -30,8 +30,8 @@ const ApplicationForm = () => {
         applicationId={applicationIdRef}
       />,
       <PetHistory ref={petHistoryRef} householdId={householdIdRef} />,
-      <Lifestyle ref={lifestyleRef} />,
-      <Agreement ref={agreementRef} />,
+      <Lifestyle ref={lifestyleRef} householdId={householdIdRef} />,
+      <Agreement ref={agreementRef} applicantId={applicationIdRef} />,
     ]);
 
   const stepRefs = [
@@ -156,8 +156,11 @@ const ApplicationForm = () => {
         }
       }
 
-      applicationIdRef.current = submitJson.application_id;
-      setApplicationId(submitJson.application_id);
+      // Only set applicant ID after Step 1 submission
+      if (currentStepIndex === 0 && submitJson.application_id) {
+        applicationIdRef.current = submitJson.application_id;
+        setApplicationId(submitJson.application_id);
+      }
 
       console.log(`Step ${currentStepIndex + 1} submitted successfully`);
 
@@ -166,7 +169,6 @@ const ApplicationForm = () => {
         currentRef.current?.markSubmitted?.();
         return;
       }
-
       next();
     } catch (error) {
       console.error(`Error submitting step ${currentStepIndex + 1}:`, error);

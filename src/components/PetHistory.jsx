@@ -42,7 +42,7 @@ const CurrentPets = memo(function CurrentPets({
         className={`form-control ${
           errors[`pet-${pet.id}-age`] ? "is-invalid" : ""
         }`}
-        type="text"
+        type="number"
         placeholder="Pet's age"
         value={pet.age}
         onChange={(e) => onChange(pet.id, { age: e.target.value })}
@@ -60,7 +60,9 @@ const CurrentPets = memo(function CurrentPets({
         value={pet.status}
         onChange={(e) => onChange(pet.id, { status: e.target.value })}
       >
-        <option value="">Spayed/Neutered Status</option>
+        <option value="" disabled>
+          Spayed/Neutered Status
+        </option>
         <option value="spayed">Spayed</option>
         <option value="neutered">Neutered</option>
         <option value="none">None</option>
@@ -209,26 +211,37 @@ const PetHistory = forwardRef(({ householdId }, ref) => {
     },
 
     getFormData: () => {
-      // si el usuario no tiene mascotas, no enviar array con datos vacíos
-      const filteredPets = petsOwn === "yes" ? pets : [];
-
       return {
         householdId: householdId?.current,
-        petsOwn,
-        pets: filteredPets,
-        previousPets,
-        previousPetText,
-        vetName,
-        vetPhone,
-        contactVet,
-        ageGroup,
-        genderGroup,
-        noPreference,
-        personalityTraits,
-        whyAdopt,
-        catPlacement,
-        whereCatStays,
-        hoursAlone,
+
+        has_current_pets: petsOwn,
+        current_pets:
+          petsOwn === "yes"
+            ? pets.map((p) => ({
+                breed: p.breed,
+                age: Number(p.age),
+                status: p.status,
+                vaccinated: p.vaccinated,
+              }))
+            : [],
+
+        had_previous_pets: previousPets,
+        previous_pet_explanation:
+          previousPets === "yes" ? previousPetText : null,
+
+        vet_name: vetName || null,
+        vet_phone: vetPhone || null,
+        contact_vet_permission: contactVet,
+
+        cat_preference_age: noPreference ? null : ageGroup,
+        cat_preference_gender: noPreference ? null : genderGroup,
+        no_preference: noPreference,
+
+        personality_traits: personalityTraits,
+        why_adopt: whyAdopt,
+        cat_living_arrangement: catPlacement,
+        cat_stay_when_away: whereCatStays,
+        hours_alone: Number(hoursAlone),
       };
     },
 
@@ -507,22 +520,20 @@ const PetHistory = forwardRef(({ householdId }, ref) => {
         <div className="invalid-feedback d-block">{errors.whyAdopt}</div>
       )}
 
-      <label className="form-label mt-3">Where will your cat live?</label>
+      <label className="form-label mt-3">Cat will stay indoors</label>
       <div className="d-flex gap-4">
-        {["indoor", "outdoor", "both"].map((opt) => (
-          <label key={opt}>
-            <input
-              className="form-check-input me-1"
-              type="radio"
-              checked={catPlacement === opt}
-              onChange={() => {
-                setCatPlacement(opt);
-                clearError("catPlacement");
-              }}
-            />
-            {opt.charAt(0).toUpperCase() + opt.slice(1)}
-          </label>
-        ))}
+        <label>
+          <input
+            className="form-check-input me-1"
+            type="radio"
+            checked={catPlacement === "yes"}
+            onChange={() => {
+              setCatPlacement("yes");
+              clearError("catPlacement");
+            }}
+          />
+          Yes
+        </label>
       </div>
       {errors.catPlacement && (
         <div className="invalid-feedback d-block">{errors.catPlacement}</div>
