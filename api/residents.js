@@ -1,7 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:5000";
 
 export async function fetchResidents() {
-  const res = await fetch(`${API_BASE}/api/residents`, {
+  const res = await fetch(`${API_BASE}/api/residents/`, {
     credentials: "include",
   });
 
