@@ -192,7 +192,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Action Cards */}
-        <div className="dashboard-card actions">
+        {/* <div className="dashboard-card actions">
           <h2>Quick Actions</h2>
           <div className="action-buttons">
             <button className="action-btn primary">
@@ -208,7 +208,7 @@ const AdminDashboard = () => {
               Settings
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

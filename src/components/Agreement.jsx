@@ -49,7 +49,7 @@ const Agreement = forwardRef(({ applicantId }, ref) => {
         </p>
 
         <button
-          className="btn contact-btn mt-4 px-4 py-2"
+          className="btn contact-btn mt-4 px-4 py-2 text-white"
           onClick={() => navigate("/")}
         >
           Go Home

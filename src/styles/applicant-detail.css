@@ -51,7 +51,8 @@
 /* Detail Grid - Bento Layout */
 .detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(200px, auto);
   gap: 20px;
   margin-bottom: 40px;
 }
@@ -75,7 +76,17 @@
 }
 
 .applicant-main {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.household-card {
   grid-column: span 2;
+  grid-row: span 2;
+}
+
+.resident-card {
+  grid-column: span 1;
 }
 
 /* Card Header */
@@ -328,12 +339,25 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
   .detail-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .applicant-main,
-  .actions-card {
+  .applicant-main {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .household-card {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .resident-card {
     grid-column: span 1;
+  }
+
+  .actions-card {
+    grid-column: span 2;
   }
 }
 
