@@ -1,7 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:5000";
 
 export async function fetchCurrentPets() {
-  const res = await fetch(`${API_BASE}/api/current_pets`, {
+  const res = await fetch(`${API_BASE}/api/current_pets/`, {
     credentials: "include",
   });
 
