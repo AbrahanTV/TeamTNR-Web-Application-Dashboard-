@@ -308,7 +308,7 @@ const ApplicantDetail = () => {
                 </div>
                 <div className="detail-field">
                   <label>Preference</label>
-                  <p>{pet.noPreference ? "Yes" : "No"}</p>
+                  <p>{pet.noPreference ? "No preference" : "Prefers"}</p>
                 </div>
               </div>
 
