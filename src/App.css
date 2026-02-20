@@ -137,8 +137,15 @@
   box-shadow: 0 10px 30px rgba(108, 75, 184, 0.1);
 }
 
-.section-title {
+.mission-title {
   color: #6c4bb8;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: #ffffff;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 2rem;
@@ -152,7 +159,8 @@
 
 /* SERVICES SECTION */
 .services-section {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  background-color: #6c4bb8;
 }
 
 .service-card {

@@ -15,16 +15,19 @@ import CurrentPetsTable from "./pages/Admin Pages/CurrentPetsTable";
 import LifestyleTable from "./pages/Admin Pages/LifestyleTable";
 import ReferencesTable from "./pages/Admin Pages/ReferencesTable";
 import AgreementTable from "./pages/Admin Pages/AgreementTable";
+import Login from "./pages/LogIn";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <HashRouter>
         <Routes>
           {/* PUBLIC ROUTES */}
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="application-page" element={<ApplicationPage />} />
+            <Route path="/login" element={<Login />} />
           </Route>
 
           {/* ADMIN ROUTES */}
@@ -42,7 +45,7 @@ function App() {
           </Route>
         </Routes>
       </HashRouter>
-    </>
+    </AuthProvider>
   );
 }
 
