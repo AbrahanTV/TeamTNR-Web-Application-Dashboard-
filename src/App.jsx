@@ -1,6 +1,7 @@
 import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import ApplicationPage from "./pages/ApplicationPage";
 
@@ -15,7 +16,6 @@ import CurrentPetsTable from "./pages/Admin Pages/CurrentPetsTable";
 import LifestyleTable from "./pages/Admin Pages/LifestyleTable";
 import ReferencesTable from "./pages/Admin Pages/ReferencesTable";
 import AgreementTable from "./pages/Admin Pages/AgreementTable";
-import Login from "./pages/LogIn";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
