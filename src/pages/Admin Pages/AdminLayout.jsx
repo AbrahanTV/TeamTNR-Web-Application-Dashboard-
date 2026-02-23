@@ -1,15 +1,37 @@
-import { useRef, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { googleLogout } from "@react-oauth/google";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminLayout = () => {
   const sidebarRef = useRef(null);
   const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+  const { user, logout, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   function toggleSidebar() {
     if (sidebarRef.current) {
       sidebarRef.current.classList.toggle("sidebar-close");
       setIsSidebarHidden(!isSidebarHidden);
     }
+  }
+
+  function handleLogout() {
+    googleLogout();
+    logout();
+    navigate("/login");
+  }
+
+  // Show loading while checking auth
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -32,6 +54,8 @@ const AdminLayout = () => {
             top: 0;
             left: 0;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
           }
 
           .sidebar-close {
@@ -85,6 +109,71 @@ const AdminLayout = () => {
           .toggle-btn:hover {
             background-color: #5a3d99;
           }
+
+          .user-profile {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+          }
+
+          .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+          }
+
+          .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+          }
+
+          .user-details {
+            flex: 1;
+            overflow: hidden;
+          }
+
+          .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .user-email {
+            font-size: 0.75rem;
+            margin: 0;
+            opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .logout-btn {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+          }
+
+          .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+          }
         `}
       </style>
 
@@ -104,27 +193,25 @@ const AdminLayout = () => {
           <Link to="applicants" className="w-fit">
             Applicants
           </Link>
-          {/* <Link to="households" className="w-fit">
-            Households
-          </Link>
-          <Link to="residents" className="w-fit">
-            Residents
-          </Link>
-          <Link to="pets" className="w-fit">
-            Pets
-          </Link>
-          <Link to="current_pets" className="w-fit">
-            Current Pets
-          </Link>
-          <Link to="lifestyle" className="w-fit">
-            Lifestyle
-          </Link>
-          <Link to="references" className="w-fit">
-            References
-          </Link>
-          <Link to="agreement" className="w-fit">
-            Agreement
-          </Link> */}
+
+          {user && (
+            <div className="user-profile">
+              <div className="user-info">
+                <img
+                  src={user.picture}
+                  alt={user.name}
+                  className="user-avatar"
+                />
+                <div className="user-details">
+                  <p className="user-name">{user.name}</p>
+                  <p className="user-email">{user.email}</p>
+                </div>
+              </div>
+              <button onClick={handleLogout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          )}
         </aside>
 
         <main className="content">

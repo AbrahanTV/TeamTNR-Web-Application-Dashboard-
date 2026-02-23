@@ -50,15 +50,19 @@ const Home = () => {
                 threshold={0.2}
               >
                 <div className="mission-card">
-                  <h2 className="section-title text-center mb-4">Our Mission</h2>
+                  <h2 className="mission-title text-center mb-4">
+                    Our Mission
+                  </h2>
                   <p className="mission-text text-center">
-                    We protect and improve the lives of community cats through compassionate
-                    Trap-Neuter-Return (TNR), medical care, and dedicated recovery support.
-                    We provide safe rehabilitation and socialization for cats and kittens,
-                    helping them transition into loving homes whenever possible. By reducing
-                    overpopulation, promoting responsible care, and advocating for the voiceless,
-                    we strive to create a more humane future where every cat—feral or domestic—can
-                    live a healthy, dignified life.
+                    We protect and improve the lives of community cats through
+                    compassionate Trap-Neuter-Return (TNR), medical care, and
+                    dedicated recovery support. We provide safe rehabilitation
+                    and socialization for cats and kittens, helping them
+                    transition into loving homes whenever possible. By reducing
+                    overpopulation, promoting responsible care, and advocating
+                    for the voiceless, we strive to create a more humane future
+                    where every cat—feral or domestic—can live a healthy,
+                    dignified life.
                   </p>
                 </div>
               </AnimatedContent>
@@ -68,7 +72,7 @@ const Home = () => {
       </section>
 
       {/* Services Section */}
-      <section className="services-section py-5">
+      <section className="services-section mb-5 py-5">
         <div className="container">
           <h2 className="section-title text-center mb-5">What We Do</h2>
           <div className="row g-4">
@@ -86,8 +90,9 @@ const Home = () => {
                   <div className="service-icon mb-3">🐱</div>
                   <h3 className="service-title">Trap-Neuter-Return</h3>
                   <p className="service-description">
-                    Humanely managing community cat populations through proven TNR practices,
-                    preventing overpopulation while ensuring cats live healthy lives.
+                    Humanely managing community cat populations through proven
+                    TNR practices, preventing overpopulation while ensuring cats
+                    live healthy lives.
                   </p>
                 </div>
               </AnimatedContent>
@@ -106,8 +111,9 @@ const Home = () => {
                   <div className="service-icon mb-3">❤️</div>
                   <h3 className="service-title">Medical Care</h3>
                   <p className="service-description">
-                    Providing essential veterinary care, vaccinations, and treatment to ensure
-                    every cat receives the medical attention they deserve.
+                    Providing essential veterinary care, vaccinations, and
+                    treatment to ensure every cat receives the medical attention
+                    they deserve.
                   </p>
                 </div>
               </AnimatedContent>
@@ -126,8 +132,9 @@ const Home = () => {
                   <div className="service-icon mb-3">🏡</div>
                   <h3 className="service-title">Adoption Services</h3>
                   <p className="service-description">
-                    Matching rehabilitated cats and kittens with loving forever homes through
-                    our comprehensive adoption and screening process.
+                    Matching rehabilitated cats and kittens with loving forever
+                    homes through our comprehensive adoption and screening
+                    process.
                   </p>
                 </div>
               </AnimatedContent>
@@ -137,7 +144,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="cta-section py-5">
+      {/* <section className="cta-section py-5">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8">
@@ -166,7 +173,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };
