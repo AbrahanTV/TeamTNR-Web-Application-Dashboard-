@@ -14,10 +14,26 @@ const ApplicantsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredApplicants = applicants.filter((app) => {
+    const fullName = `${app.firstName} ${app.lastName}`.toLowerCase();
+    const email = (app.email || "").toLowerCase();
+    const id = (app.id || "").toString().toLowerCase();
+    const search = searchTerm.toLowerCase();
+
+    return (
+      fullName.includes(search) || email.includes(search) || id.includes(search)
+    );
+  });
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = applicants.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(applicants.length / itemsPerPage);
+  const currentItems = filteredApplicants.slice(
+    indexOfFirstItem,
+    indexOfLastItem,
+  );
+  const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
 
   useEffect(() => {
     fetchApplicants()
@@ -68,8 +84,31 @@ const ApplicantsTable = () => {
         <p>Manage and review all application submissions.</p>
       </div>
 
+      {/* Search Bar */}
+      <div className="search-bar-container">
+        <div className="search-bar-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search by name, email, or ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+          {searchTerm && (
+            <button
+              className="clear-btn"
+              onClick={() => setSearchTerm("")}
+              title="Clear search"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+      </div>
+
       <div className="table-card">
-        {applicants.length > 0 ? (
+        {filteredApplicants.length > 0 ? (
           <>
             <div className="table-wrapper">
               <table className="my-table overflow-hidden">
