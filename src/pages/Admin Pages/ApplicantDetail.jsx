@@ -348,7 +348,7 @@ const ApplicantDetail = () => {
               <div className="detail-row">
                 <div className="detail-field">
                   <label>Hours Alone</label>
-                  <p>{pet.hoursAlone || "N/A"}</p>
+                  <p>{pet.hoursAlone}</p>
                 </div>
               </div>
             </div>

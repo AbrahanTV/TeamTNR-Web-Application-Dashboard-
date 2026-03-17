@@ -56,53 +56,10 @@ const AdminDashboard = () => {
         <p>Welcome back! Here's your application overview.</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="stats-grid">
-        <Link to="/admin/applicants" className="text-decoration-none">
-          <div className="stat-card applicants">
-            <div className="stat-icon">👥</div>
-            <div className="stat-content">
-              <h3>{stats.applicants}</h3>
-              <p>Total Applicants</p>
-            </div>
-          </div>
-        </Link>
-
-        <Link to="/admin/households" className="text-decoration-none">
-          <div className="stat-card households">
-            <div className="stat-icon">🏠</div>
-            <div className="stat-content">
-              <h3>{stats.households}</h3>
-              <p>Households</p>
-            </div>
-          </div>
-        </Link>
-
-        <Link to="/admin/residents" className="text-decoration-none">
-          <div className="stat-card residents">
-            <div className="stat-icon">👫</div>
-            <div className="stat-content">
-              <h3>{stats.residents}</h3>
-              <p>Total Residents</p>
-            </div>
-          </div>
-        </Link>
-
-        <Link to="/admin/pets" className="text-decoration-none">
-          <div className="stat-card pets">
-            <div className="stat-icon">🐾</div>
-            <div className="stat-content">
-              <h3>{stats.pets}</h3>
-              <p>Registered Pets</p>
-            </div>
-          </div>
-        </Link>
-      </div>
-
       {/* Bento Grid Content */}
       <div className="dashboard-grid">
         {/* Recent Applications - Wider Card */}
-        <div className="dashboard-card recent-applications">
+        <div className="dashboard-card recent-applications ">
           <div className="card-header">
             <h2>Recent Applications</h2>
             <span className="badge">{recentApplicants.length}</span>
@@ -137,59 +94,16 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="dashboard-card quick-stats">
-          <h2>Quick Stats</h2>
-          <div className="stat-item">
-            <label>Approval Rate</label>
-            <div className="progress-bar">
-              <div className="progress" style={{ width: "75%" }}></div>
-            </div>
-            <span>75%</span>
-          </div>
-          <div className="stat-item">
-            <label>Completion Rate</label>
-            <div className="progress-bar">
-              <div className="progress" style={{ width: "92%" }}></div>
-            </div>
-            <span>92%</span>
-          </div>
-          <div className="stat-item">
-            <label>Active Cases</label>
-            <div className="progress-bar">
-              <div className="progress" style={{ width: "60%" }}></div>
-            </div>
-            <span>60%</span>
-          </div>
-        </div>
-
-        {/* System Status */}
-        <div className="dashboard-card system-status">
-          <h2>System Status</h2>
-          <div className="status-items">
-            <div className="status-item online">
-              <span className="status-dot"></span>
-              <div>
-                <p className="status-label">Database</p>
-                <p className="status-value">Online</p>
-              </div>
-            </div>
-            <div className="status-item online">
-              <span className="status-dot"></span>
-              <div>
-                <p className="status-label">API Server</p>
-                <p className="status-value">Healthy</p>
-              </div>
-            </div>
-            <div className="status-item online">
-              <span className="status-dot"></span>
-              <div>
-                <p className="status-label">Storage</p>
-                <p className="status-value">Available</p>
-              </div>
+        {/* Applicants Widget */}
+        <Link to="/admin/applicants" className="text-decoration-none">
+          <div className="dashboard-card applicants-widget">
+            <div className="stat-icon">👥</div>
+            <div className="stat-content">
+              <h3>{stats.applicants}</h3>
+              <p>Total Applicants</p>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Action Cards */}
         {/* <div className="dashboard-card actions">
