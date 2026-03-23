@@ -22,26 +22,6 @@ const Navigation = () => {
         <nav className="navbar">
           <ul className="font-family fw-bold fs-3 d-flex list-unstyled gap-4 m-0 p-0">
             <li>
-              {/* <Link
-                to="/application-page"
-                className="text-white text-decoration-none links-hover"
-              >
-                Application Form
-              </Link> */}
-            </li>
-            <li>
-              {/* <Link
-                to="/contact"
-                className="text-white text-decoration-none links-hover"
-              >
-                Contact Us
-              </Link> */}
-              {/* <a
-                href="/footer"
-                className="text-white text-decoration-none links-hover"
-              >
-                Contact Us
-              </a> */}
               <button
                 className="text-white text-decoration-none links-hover bg-transparent border-0"
                 onClick={() =>
@@ -52,6 +32,9 @@ const Navigation = () => {
               >
                 Contact Us
               </button>
+            </li>
+            <li>
+              <Link to="/admin">View Dashboard</Link>
             </li>
           </ul>
         </nav>
