@@ -7,8 +7,7 @@ const VITE_CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={VITE_CLIENT_ID}>
-      <App />
-    </GoogleOAuthProvider>
+    <App />
+    <GoogleOAuthProvider clientId={VITE_CLIENT_ID}></GoogleOAuthProvider>
   </StrictMode>,
 );

@@ -33,9 +33,7 @@ const Navigation = () => {
                 Contact Us
               </button>
             </li>
-            <li>
-              <Link to="/admin">View Dashboard</Link>
-            </li>
+            <li>{/* <Link to="/admin">View Dashboard</Link> */}</li>
           </ul>
         </nav>
       </header>
