@@ -1,53 +1,20 @@
-import { useEffect, useState } from "react";
-import { fetchApplicants } from "/api/applicants";
-import { fetchHouseholds } from "/api/households";
-import { fetchResidents } from "/api/residents";
-import { fetchPets } from "/api/pets";
+import {
+  DUMMY_APPLICANTS,
+  DUMMY_HOUSEHOLDS,
+  DUMMY_RESIDENTS,
+  DUMMY_PETS,
+} from "/src/data/dummyData.js";
 import "../styles/dashboard.css";
 import { Link } from "react-router";
 
+const stats = {
+  applicants: DUMMY_APPLICANTS.length,
+  households: DUMMY_HOUSEHOLDS.length,
+  residents: DUMMY_RESIDENTS.length,
+  pets: DUMMY_PETS.length,
+};
+
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({
-    applicants: 0,
-    households: 0,
-    residents: 0,
-    pets: 0,
-  });
-
-  const [loading, setLoading] = useState(true);
-  const [recentApplicants, setRecentApplicants] = useState([]);
-
-  useEffect(() => {
-    Promise.all([
-      fetchApplicants(),
-      fetchHouseholds(),
-      fetchResidents(),
-      fetchPets(),
-    ])
-      .then(([applicantData, householdData, residentData, petData]) => {
-        setStats({
-          applicants: applicantData.length,
-          households: householdData.length,
-          residents: residentData.length,
-          pets: petData.length,
-        });
-        setRecentApplicants(applicantData.slice(0, 5));
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching dashboard data:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
-    return (
-      <div className="dashboard-loading">
-        <div className="spinner"></div>
-        <p>Loading Dashboard...</p>
-      </div>
-    );
-
   return (
     <div className="dashboard-container">
       {/* Header */}
@@ -59,38 +26,35 @@ const AdminDashboard = () => {
       {/* Bento Grid Content */}
       <div className="dashboard-grid">
         {/* Recent Applications - Wider Card */}
-        <div className="dashboard-card recent-applications ">
+        <div className="dashboard-card recent-applications">
           <div className="card-header">
             <h2>Recent Applications</h2>
-            <span className="badge">{recentApplicants.length}</span>
+            <span className="badge">{DUMMY_APPLICANTS.length}</span>
           </div>
           <div className="applications-list">
-            {recentApplicants.length > 0 ? (
-              recentApplicants.map((app, index) => (
-                <Link
-                  to={`/admin/applicants/${app.id}`}
-                  className="text-decoration-none"
-                >
-                  <div key={index} className="application-item">
-                    <div className="app-avatar">
-                      {app.firstName.charAt(0)}
-                      {app.lastName.charAt(0)}
-                    </div>
-                    <div className="app-info">
-                      <h4>
-                        {app.firstName} {app.lastName}
-                      </h4>
-                      <p>{app.email || "No email"}</p>
-                    </div>
-                    <div className="app-date">
-                      <small>{app.dateOfSubmission || "N/A"}</small>
-                    </div>
+            {DUMMY_APPLICANTS.map((app, index) => (
+              <Link
+                key={index}
+                to={`/admin/applicants/${app.id}`}
+                className="text-decoration-none"
+              >
+                <div className="application-item">
+                  <div className="app-avatar">
+                    {app.firstName.charAt(0)}
+                    {app.lastName.charAt(0)}
                   </div>
-                </Link>
-              ))
-            ) : (
-              <p className="no-data">No recent applications</p>
-            )}
+                  <div className="app-info">
+                    <h4>
+                      {app.firstName} {app.lastName}
+                    </h4>
+                    <p>{app.email || "No email"}</p>
+                  </div>
+                  <div className="app-date">
+                    <small>{app.dateOfSubmission || "N/A"}</small>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
 

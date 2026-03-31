@@ -1,9 +1,15 @@
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  HashRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 // import Login from "./pages/Login";
-import Layout from "./components/Layout";
-import ApplicationPage from "./pages/ApplicationPage";
+// import Layout from "./components/Layout";
+// import ApplicationPage from "./pages/ApplicationPage";
 
 import AdminLayout from "./pages/Admin Pages/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -22,12 +28,8 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* PUBLIC ROUTES */}
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="application-page" element={<ApplicationPage />} />
-          {/* <Route path="/login" element={<Login />} /> */}
-        </Route>
+        {/* Redirect root to admin */}
+        <Route path="/" element={<Navigate to="/admin" replace />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<AdminLayout />}>

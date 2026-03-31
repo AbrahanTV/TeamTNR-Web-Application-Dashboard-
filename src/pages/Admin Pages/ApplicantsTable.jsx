@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
-import { fetchApplicants, deleteApplicant } from "/api/applicants";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "/src/components/Pagination.jsx";
+import { DUMMY_APPLICANTS } from "/src/data/dummyData.js";
 import "/src/styles/tables.css";
 
 const ApplicantsTable = () => {
-  const [applicants, setApplicants] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [applicants, setApplicants] = useState(DUMMY_APPLICANTS);
 
   const navigate = useNavigate();
 
@@ -35,43 +33,11 @@ const ApplicantsTable = () => {
   );
   const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
 
-  useEffect(() => {
-    fetchApplicants()
-      .then((data) => {
-        setApplicants(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
-    return (
-      <div className="table-loading">
-        <div className="spinner"></div>
-        <p>Loading applicants...</p>
-      </div>
-    );
-  if (error)
-    return (
-      <div className="table-error">
-        <p>{error}</p>
-      </div>
-    );
-
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this applicant?")) {
       return;
     }
-
-    try {
-      await deleteApplicant(id);
-      setApplicants((prev) => prev.filter((applicant) => applicant.id !== id));
-    } catch (err) {
-      alert("Failed to delete applicant");
-    }
+    setApplicants((prev) => prev.filter((applicant) => applicant.id !== id));
   };
 
   return (

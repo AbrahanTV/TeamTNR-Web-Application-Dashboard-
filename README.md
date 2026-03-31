@@ -1,16 +1,77 @@
-# React + Vite
+# TeamTNR — Adoption Application Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Showcase version.** This repository is a portfolio demo of the admin dashboard built for TeamTNR, a cat rescue and adoption organization. All data displayed is fictional dummy data — no real applicant information is used or exposed.
 
-Currently, two official plugins are available:
+The original project is maintained privately and connected to a live database. This public version has had all API calls removed and replaced with static dummy data so the UI can be explored freely.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## What It Does
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+TeamTNR receives adoption applications through a public-facing multi-step form. This dashboard is the internal admin tool used to manage and review those applications.
 
-## Expanding the ESLint configuration
+**Key features:**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Admin dashboard with a summary of recent submissions
+- Applicants table with search functionality
+- Full applicant detail view covering all sections of the application:
+  - Personal information
+  - Household details and members
+  - Pet history and preferences
+  - Lifestyle and commitment
+  - References
+  - Signed agreement
+
+---
+
+## Tech Stack
+
+**Frontend**
+
+- React 19
+- React Router 7
+- Vite
+- SCSS / CSS Modules
+
+**Backend** _(not included in this repo)_
+
+- Python / Flask
+- MySQL
+- Deployed on Digital Ocean
+
+---
+
+## Running Locally
+
+```bash
+npm install
+npm run dev
+```
+
+The app opens at `http://localhost:5173` and lands directly on the admin dashboard.
+
+No environment variables or backend connection required — all data is served from `src/data/dummyData.js`.
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/         # Shared UI components (layout, pagination, form steps)
+├── data/
+│   └── dummyData.js    # All dummy data used in this showcase version
+├── pages/
+│   ├── AdminDashboard.jsx
+│   └── Admin Pages/
+│       ├── ApplicantsTable.jsx
+│       ├── ApplicantDetail.jsx
+│       └── ...         # Other admin table views
+└── styles/             # CSS stylesheets
+```
+
+---
+
+## Note on the Original Project
+
+The production version of this dashboard is connected to a live MySQL database and a Flask REST API, with Google OAuth for admin authentication. This showcase version strips all of that out to allow the UI to be viewed without any backend dependency.
