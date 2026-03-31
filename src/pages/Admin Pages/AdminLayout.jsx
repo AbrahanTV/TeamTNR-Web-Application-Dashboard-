@@ -1,20 +1,20 @@
-import { useRef, useState, useEffect } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { googleLogout } from "@react-oauth/google";
-import { useAuth } from "../../context/AuthContext";
+import { useRef, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
+// import { googleLogout } from "@react-oauth/google";
+// import { useAuth } from "../../context/AuthContext";
 
 const AdminLayout = () => {
   const sidebarRef = useRef(null);
   const [isSidebarHidden, setIsSidebarHidden] = useState(false);
-  const { user, logout, loading } = useAuth();
-  const navigate = useNavigate();
+  // const { user, logout, loading } = useAuth();
+  // const navigate = useNavigate();
 
   // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate("/login", { replace: true });
-    }
-  }, [user, loading, navigate]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, [user, loading, navigate]);
 
   function toggleSidebar() {
     if (sidebarRef.current) {
@@ -23,16 +23,11 @@ const AdminLayout = () => {
     }
   }
 
-  function handleLogout() {
-    googleLogout();
-    logout();
-    navigate("/login");
-  }
-
-  // Show loading while checking auth
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // function handleLogout() {
+  //   googleLogout();
+  //   logout();
+  //   navigate("/login");
+  // }
 
   return (
     <>
@@ -194,7 +189,7 @@ const AdminLayout = () => {
             Applicants
           </Link>
 
-          {user && (
+          {/* {user && (
             <div className="user-profile">
               <div className="user-info">
                 <img
@@ -211,7 +206,7 @@ const AdminLayout = () => {
                 Logout
               </button>
             </div>
-          )}
+          )} */}
         </aside>
 
         <main className="content">

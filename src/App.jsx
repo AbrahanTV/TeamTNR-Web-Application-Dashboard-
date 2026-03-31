@@ -1,7 +1,7 @@
 import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+// import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import ApplicationPage from "./pages/ApplicationPage";
 
@@ -16,36 +16,35 @@ import CurrentPetsTable from "./pages/Admin Pages/CurrentPetsTable";
 import LifestyleTable from "./pages/Admin Pages/LifestyleTable";
 import ReferencesTable from "./pages/Admin Pages/ReferencesTable";
 import AgreementTable from "./pages/Admin Pages/AgreementTable";
-import { AuthProvider } from "./context/AuthContext";
+// import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <AuthProvider>
-      <HashRouter>
-        <Routes>
-          {/* PUBLIC ROUTES */}
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="application-page" element={<ApplicationPage />} />
-            <Route path="/login" element={<Login />} />
-          </Route>
+    <HashRouter>
+      <Routes>
+        {/* PUBLIC ROUTES */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="application-page" element={<ApplicationPage />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+        </Route>
 
-          {/* ADMIN ROUTES */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="applicants" element={<ApplicantsTable />} />
-            <Route path="applicants/:id" element={<ApplicantDetail />} />
-            <Route path="households" element={<HouseholdTable />} />
-            <Route path="residents" element={<ResidentsTable />} />
-            <Route path="pets" element={<PetsTable />} />
-            <Route path="current_pets" element={<CurrentPetsTable />} />
-            <Route path="lifestyle" element={<LifestyleTable />} />
-            <Route path="references" element={<ReferencesTable />} />
-            <Route path="agreement" element={<AgreementTable />} />
-          </Route>
-        </Routes>
-      </HashRouter>
-    </AuthProvider>
+        {/* ADMIN ROUTES */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="applicants" element={<ApplicantsTable />} />
+          <Route path="applicants/:id" element={<ApplicantDetail />} />
+          <Route path="households" element={<HouseholdTable />} />
+          <Route path="residents" element={<ResidentsTable />} />
+          <Route path="pets" element={<PetsTable />} />
+          <Route path="current_pets" element={<CurrentPetsTable />} />
+          <Route path="lifestyle" element={<LifestyleTable />} />
+          <Route path="references" element={<ReferencesTable />} />
+          <Route path="agreement" element={<AgreementTable />} />
+        </Route>
+      </Routes>
+    </HashRouter>
+    // <AuthProvider></AuthProvider>
   );
 }
 
